@@ -7,13 +7,13 @@ YOctoSHell v0.0a
 :::::::: .\  +---- | | |
 ::::::::_,_o +---- +-+-|
 ```
-#Licence
+# Licence
 Licenced by APL:
 Asshole Public Licension:
 If you use this code without telling your buddies what you got it on 
 github.com/Korrmet - you're an asshole.
 
-#Motivation
+# Motivation
 I'm often think doing my job if i can do somethig after firmware is loaded
 inside microcontroller. In example what if i can dynamically change some
 variable or reinitialize interface. Ofcourse i can do it when i debugging but
@@ -26,10 +26,10 @@ and i can't realize any task for it. But tasks such as turning stepper motor
 to an angle from uart input or get log of errors are usual. In my opinion
 it's enough for develop own shell which i can use in my job.
 
-#Status
+# Status
 Just start developing but usable.
 
-#Plans
+# Plans
 - implement output redirect to another command
 - implement braces for manual argument borders
 - implement retval handling
