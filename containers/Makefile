@@ -9,15 +9,15 @@ INC_DIR     = ./$(DISTRIB_DIR)/inc
 
 all: containers
 
-containers: $(DISTRIB_DIR)/libcontainers.a \
+containers: $(DISTRIB_DIR)/libcontainers.o \
 	          $(INC_DIR)/lists.h \
 		        $(INC_DIR)/strings.h
 
-$(DISTRIB_DIR)/libcontainers.a: $(BUILD_DIR)/lists.o \
+$(DISTRIB_DIR)/libcontainers.o: $(BUILD_DIR)/lists.o \
 	                              $(BUILD_DIR)/strings.o
 	@echo $@
 	@mkdir -p $(DISTRIB_DIR)
-	@$(AR) $(ARFLAGS) $@ $?
+	@$(LD) -r $(LDFLAGS) $? -o $@
 
 $(BUILD_DIR)/lists.o: lists.c
 	@echo $@

@@ -12,24 +12,23 @@ BUILD_DIR   = ./build
 
 all: sandbox
 
-sandbox: libs/yosh/libyosh.a \
-	       libs/dumbtools/libdumbtools.a \
-				 $(BUILD_DIR)/sandbox.o
+sandbox: $(BUILD_DIR)/sandbox.o
 	@echo $@
-	@$(CC) $? $(CFLAGS) -o $@
+	@$(CC) $? $(CFLAGS) -Llibs/yosh -lyosh -Llibs/dumbtools -ldumbtools -o $@
 
 $(BUILD_DIR)/sandbox.o: sandbox.c
 	@echo $@
 	@$(CC) -c $< $(CFLAGS) -o $@
 
-sandbox.c: libs/
+sandbox.c: libs/yosh/libyosh.o \
+	         libs/dumbtools/libdumbtools.o
 
-libs/yosh/libyosh.a:
+libs/yosh/libyosh.o:
 	@make -C ../../ BUILD_DIR=$(abspath $(BUILD_DIR)) \
 		              DISTRIB_DIR=$(abspath $(dir $@)) \
 									CFLAGS=$(CFLAGS)
 
-libs/dumbtools/libdumbtools.a:
+libs/dumbtools/libdumbtools.o:
 	@make -C dumbtools/ BUILD_DIR=$(abspath $(BUILD_DIR)) \
 		                  DISTRIB_DIR=$(abspath $(dir $@)) \
 											CFLAGS=$(CFLAGS)
