@@ -57,6 +57,12 @@ void* yosh_list_init(void* list, unsigned int payload_id)
 
   return l; }
 
+/** \brief   exclude element from linked list
+ *  \details just redefine next and prev pointers
+ *           \note TODO: add validation check
+ *  \arg     list pointer to item be detached
+ *                \note TODO: rename to "item"
+ *  \return  pointer to detached item*/ 
 void* yosh_list_detach(void* list)
 { yosh_list_t* l = (yosh_list_t*)list;
   
@@ -65,6 +71,12 @@ void* yosh_list_detach(void* list)
 
   return l; }
 
+/** \brief   find first (root) item in list
+ *  \details search by chain in previous
+ *           \note TODO; add circle detecton
+ *  \arg     list pointer to any item in list
+ *                \note TODO: rename to "item"
+ *  \return  pointer to first (root) item */
 void* yosh_list_first(void* list)
 { yosh_list_t* l = (yosh_list_t*)list;
 
@@ -72,6 +84,12 @@ void* yosh_list_first(void* list)
 
   return l; }
 
+/** \brief   find last item in list
+ *  \details search by chain in nexts
+ *           \note TODO: add circle detection
+ *  \arg     list pointer to any item in list
+ *                \note TODO: rename to "item"
+ *  \return  pointer to last item */
 void* yosh_list_last(void* list)
 { yosh_list_t* l = (yosh_list_t*)list;
 
@@ -79,6 +97,13 @@ void* yosh_list_last(void* list)
 
   return l; }
 
+/** \brief   insert item in list before selected
+ *  \details manipulates prev and next pointers
+ *           \note TODO: make arguments validation
+ *  \arg     list any item in list
+ *                \note TODO: rename to "dest"
+ *  \arg     item item to be inserted in list
+ *  \return  pointer to inserted item */
 void* yosh_list_insert_before(void* list, void* item)
 { yosh_list_t* prev = ((yosh_list_t*)list)->prev;
   yosh_list_t* next = (yosh_list_t*)list;
@@ -90,6 +115,13 @@ void* yosh_list_insert_before(void* list, void* item)
 
   return i; }
 
+/** \brief   insert item in list after selected
+ *  \details manipulates prev and next pointers
+ *           \note TODO: make arguments validation
+ *  \arg     list any item in list
+ *                \note TODO: rename to "dest"
+ *  \arg     item item to be inserted in list
+ *  \return  pointer to inserted item */
 void* yosh_list_insert_after(void* list, void* item)
 { yosh_list_t* prev = (yosh_list_t*)list;
   yosh_list_t* next = ((yosh_list_t*)list)->next;
@@ -101,9 +133,19 @@ void* yosh_list_insert_after(void* list, void* item)
 
   return i; }
 
+/** \brief   insert item in last position in linked list
+ *  \details search last item and insert after it
+ *  \arg     list any item of target list
+ *  \arg     item item to be appended
+ *  \return  pointer to appended item*/
 void* yosh_list_append(void* list, void* item)
 { return yosh_list_insert_after(yosh_list_last(list), item); }
 
+/** \brief   insert item in first (root) position of linked list
+ *  \details search first item and insert before it
+ *  \arg     list
+ *  \arg     item
+ *  \return */
 void* yosh_list_prepend(void* list, void* item)
 { return yosh_list_insert_before(yosh_list_first(list), item); } 
 
