@@ -6,4 +6,4 @@ all:
 		-o sandbox
 
 clean:
-	rm -rf test
+	rm -rf test sandbox
