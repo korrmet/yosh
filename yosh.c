@@ -8,29 +8,48 @@ yosh_app_t* yosh_builtin_apps[] = { &yosh_builtin_help,
                                     &yosh_builtin_about,
                                     &yosh_builtin_exit   };
 
+/** \brief this type is used for argument passing into command functions */
 typedef struct
 { yosh_list_t list;
   char*       arg;
 } yosh_arg_list_t;
 
+/** \brief this type is a part of string container */
 typedef struct //yosh_string_t
-{ char*  s;
-  size_t len;
-  char*  iter;
+{ char*  s;    ///< pointer to the string
+  size_t len;  ///< length of the string
+  char*  iter; ///< iterator which represent next symbol for reading
 } yosh_string_t;
 
+/** \brief this type is used by parser */
 typedef struct //yosh_data_t
-{ yosh_string_t*     input;
-  char*              cur_char;
-  char*              greet_string;
-  int                esc_flag;
-  int                exit_req;
-  yosh_env_t         env;
+{ yosh_string_t*     input;        ///< string of a user input
+  char*              cur_char;     /* TODO: write description */
+  char*              greet_string; /**< string which will be  printed at start
+                                        of new line */
+  int                esc_flag;     ///< escape-symbol flag (backslash)
+  int                exit_req;     /**< request for exit from shell
+                                        TODO: this is deprecated field. Now
+                                              shell use state machine for
+                                              control itself */
+  yosh_env_t         env;          /**< environment for commands and partionally
+                                        for parser */
 } yosh_data_t;
 
+/** \brief   prints raw string in output buffer 
+ *  \details as replacement to printf but without dependencies of any type
+ *  \arg     e environment
+ *  \arg     s string to pront */
 void yosh_puts(yosh_env_t* e, const char* s)
 { while (*s != 0) { e->calls.putchar(*s); s++; } }
 
+/** \brief   initialize linked list root node structure
+ *  \arg     list       pointer to a root node of list
+ *  \arg     payload_id identifier of payloaded data type
+ *                      \note this field is not necessary for linkde list
+ *                            mechanisms theirselves but useful for a user
+ *                            TODO: maybe deprecate?
+ *  \return  pointer to a root node of list */
 void* yosh_list_init(void* list, unsigned int payload_id)
 { yosh_list_t* l = (yosh_list_t*)list;
 
