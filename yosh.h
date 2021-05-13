@@ -3,16 +3,23 @@
 
 #include <stddef.h>
 
-#define YOSH_STANDARD_INPUT_LEN      40
-#define YOSH_STANDARD_ARG_LEN        10
-#define YOSH_STANDARD_STRING_EXT_VAL 10
+#define YOSH_STANDARD_INPUT_LEN      40 /**< length of standard input in chars
+                                             \note automatically extended, not
+                                                   maximum value */
+#define YOSH_STANDARD_ARG_LEN        10 /**< TODO: what is it and why? */
+#define YOSH_STANDARD_STRING_EXT_VAL 10 /**< length in symbols of string extend
+                                             increment */
 
+/** \brief identifiers of linked list payload 
+ *         \note TODO: check for unused */
 typedef enum //yosh_list_id_t
 { YOSH_LIST_ID__ARG     = 0,
   YOSH_LIST_ID__APP     = 1,
   YOSH_LIST_ID__ENV_VAR = 2
 } yosh_list_id_t;
 
+/** \brief interface of linked list
+ *         \note TODO: create containers repo and add it there */
 typedef struct yosh_list
 { struct yosh_list* next;
   struct yosh_list* prev;
@@ -28,43 +35,61 @@ void* yosh_list_insert_after(void* list, void* item);
 void* yosh_list_append(void* list, void* item);
 void* yosh_list_prepend(void* list, void* item);
 
+/** \brief   type of argument
+ *  \details set of strings inside linked list container */
 typedef struct //yosh_arg_t
 { yosh_list_t l;
   char*       str;
 } yosh_arg_t;
 
+/** \brief   shell environment variable
+ *  \details pair of strings name-value packed in linked list container */
 typedef struct //yosh_var_t
 { yosh_list_t l;
   char* name;
   char* value;
 } yosh_var_t;
 
+/** \brief   syscalls which shell use in it's work */
 typedef struct //yosh_calls_t
-{ int              (*putchar)(int ch);
-  int              (*getchar)(void);
-  void*            (*malloc)(size_t size);
-  void             (*free)(void* ptr); 
+{ int              (*putchar)(int ch);     /**< send one char to io device  */
+  int              (*getchar)(void);       /**< get one char from io device */
+  void*            (*malloc)(size_t size); /**< allocate memory */
+  void             (*free)(void* ptr);     /**< free allocated memory */
 } yosh_calls_t;
 
+/** \brief   application descriptor */
 typedef struct //yosh_app_t
-{ const char* name;
-  void (*ptr)(void);
-  const char* help; //may be NULL
+{ const char* name;  /**< name of your app
+                          \note used for calls from shell */
+  void (*ptr)(void); /**< pointer to a handler of your app */
+  const char* help;  /**< help of your app. 
+                          \note shell command "help" prints this string
+                          \note may be NULL */
 } yosh_app_t;
 
+/** \brief possible states of shell */
 typedef enum //yosh_state_t
 { YOSH_STATE__WAITING_LOGIN = 0,
   YOSH_STATE__RUNNING       = 1,
   YOSH_STATE__HALT          = 3
 } yosh_state_t;
 
+/** \brief   shell environment descriptor
+ *  \details you can run multiple shells in your system. all you need is create
+ *           multiple descriptors 
+ *           \note every shell application take this descriptor */
 typedef struct //yosh_env_t
-{ yosh_calls_t calls;
-  yosh_list_t* user_apps;
-  yosh_app_t** builtin_apps;
-  unsigned int builtin_apps_len;
-  yosh_var_t*  vars;
-  yosh_state_t state;
+{ yosh_calls_t calls;            /**< syscalls */
+  yosh_list_t* user_apps;        /**< list of your apps. 
+                                      \note add it using container api */
+  yosh_app_t** builtin_apps;     /**< list of built-in apps. 
+                                      \note don't modify it */
+  unsigned int builtin_apps_len; /**< length of list of builtin apps
+                                      \note don't modify it */
+  yosh_var_t*  vars;             /**< shell vars
+                                      \note add it using container api */
+  yosh_state_t state;            /**< state of shell */
 } yosh_env_t;
 
 typedef int (*yosh_func_t)(yosh_env_t* env, yosh_arg_t* args);
