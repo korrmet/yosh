@@ -44,6 +44,7 @@ void yosh_puts(yosh_env_t* e, const char* s)
 { while (*s != 0) { e->calls.putchar(*s); s++; } }
 
 /** \brief   initialize linked list root node structure
+ *           \note TODO: move to another file
  *  \arg     list       pointer to a root node of list
  *  \arg     payload_id identifier of payloaded data type
  *                      \note this field is not necessary for linkde list
@@ -60,6 +61,7 @@ void* yosh_list_init(void* list, unsigned int payload_id)
 /** \brief   exclude element from linked list
  *  \details just redefine next and prev pointers
  *           \note TODO: add validation check
+ *           \note TODO: move to another file
  *  \arg     list pointer to item be detached
  *                \note TODO: rename to "item"
  *  \return  pointer to detached item*/ 
@@ -74,6 +76,7 @@ void* yosh_list_detach(void* list)
 /** \brief   find first (root) item in list
  *  \details search by chain in previous
  *           \note TODO; add circle detecton
+ *           \note TODO: move to another file
  *  \arg     list pointer to any item in list
  *                \note TODO: rename to "item"
  *  \return  pointer to first (root) item */
@@ -87,6 +90,7 @@ void* yosh_list_first(void* list)
 /** \brief   find last item in list
  *  \details search by chain in nexts
  *           \note TODO: add circle detection
+ *           \note TODO: move to another file
  *  \arg     list pointer to any item in list
  *                \note TODO: rename to "item"
  *  \return  pointer to last item */
@@ -100,6 +104,7 @@ void* yosh_list_last(void* list)
 /** \brief   insert item in list before selected
  *  \details manipulates prev and next pointers
  *           \note TODO: make arguments validation
+ *           \note TODO: move to another file
  *  \arg     list any item in list
  *                \note TODO: rename to "dest"
  *  \arg     item item to be inserted in list
@@ -118,6 +123,7 @@ void* yosh_list_insert_before(void* list, void* item)
 /** \brief   insert item in list after selected
  *  \details manipulates prev and next pointers
  *           \note TODO: make arguments validation
+ *           \note TODO: move to another file
  *  \arg     list any item in list
  *                \note TODO: rename to "dest"
  *  \arg     item item to be inserted in list
@@ -135,6 +141,7 @@ void* yosh_list_insert_after(void* list, void* item)
 
 /** \brief   insert item in last position in linked list
  *  \details search last item and insert after it
+ *           \note TODO: move to another file
  *  \arg     list any item of target list
  *  \arg     item item to be appended
  *  \return  pointer to appended item*/
@@ -143,17 +150,44 @@ void* yosh_list_append(void* list, void* item)
 
 /** \brief   insert item in first (root) position of linked list
  *  \details search first item and insert before it
- *  \arg     list
- *  \arg     item
- *  \return */
+ *           \note TODO: move to another file
+ *  \arg     list any item of target list
+ *  \arg     item item to be prepended
+ *  \return  pointer to prepended item */
 void* yosh_list_prepend(void* list, void* item)
 { return yosh_list_insert_before(yosh_list_first(list), item); } 
 
+/** \brief   memcpyy replacement. copy n bytes of data from source to 
+ *           destination
+ *  \details needs for reduce dependencies. pretty lightweight, but dumb and 
+ *           slow
+ *           \note TODO: move to another file
+ *  \arg     dst pointer to destination memory
+ *  \arg     src pointer to source memory
+ *  \arg     n   number of bytes to copy */
 void yosh_memcpy_dumb(void* dst, void* src, size_t n)
 { char* d = dst; char* s = src; while (n > 0) { d[n - 1] = s[n - 1]; n--; } }
+
+/** \brief   memset replacement. fill specified memory area to value
+ *  \details needs to reduce depe ndencies. pretty lightweight, but dumb and
+ *           slow
+ *           \note TODO: move to another file
+ *  \arg     dst pointer to destination memory
+ *  \arg     val value to be set in specified memory
+ *  \arg     n   number of bytes to set */
 void yosh_memset_dumb(void* dst, char val, size_t n)
 { char* d = (char*)dst; for (int i = 0; i < n; i++) { *d++ = val; } }
 
+/** \brief   strcmp replacement. compare two strings
+ *  \details needs for reduce dependencies. pretty lightweight but dumb and
+ *           slow
+ *           \note TODO: move to another file
+ *  \arg     str1 pointer to string
+ *  \arg     str2 pointer to string
+ *  \return  result of comparsion or error sequence
+ *  \retval  0  strings are not equal
+ *  \retval  1  strings are equal
+ *  \retval  -1 error occured */
 int yosh_strcmp_dumb(const char* str1, const char* str2)
 { if (str1 == NULL) { return -1; }
   if (str2 == NULL) { return -1; }
@@ -164,6 +198,14 @@ int yosh_strcmp_dumb(const char* str1, const char* str2)
 
   return 1; }
 
+/** \brief   part of string container. creates a new string
+ *  \details dynamically allocates memory
+ *           \note TODO: make repository for container and move it there
+ *  \arg     d yosh descriptor. need to take malloc function
+ *  \arg     n size of string
+ *  \return  poi nter to created string or error sequence
+ *  \retval  null  error sequence
+ *  \retval  !null valid pointer */
 yosh_string_t* yosh_new_string(yosh_data_t* d, size_t n)
 { yosh_string_t* ret = d->env.calls.malloc(sizeof(yosh_string_t));
   ret->s = d->env.calls.malloc(n);
@@ -171,6 +213,11 @@ yosh_string_t* yosh_new_string(yosh_data_t* d, size_t n)
   ret->len = n; ret->iter = ret->s;
   return ret; }
 
+/** \brief   part of string container. deletes an existing string
+ *  \details dynamically free memory
+ *           \note TODO: make repository for container and move it there
+ *  \arg     d yosh descriptor. need to take free function
+ *  \arg     s pointer to a string container */
 void yosh_del_string(yosh_data_t* d, yosh_string_t* s)
 { d->env.calls.free(s->s); d->env.calls.free(s); }
 
