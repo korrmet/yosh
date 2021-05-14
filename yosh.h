@@ -8,8 +8,6 @@
                                              \note automatically extended, not
                                                    maximum value */
 #define YOSH_STANDARD_ARG_LEN        10 /**< TODO: what is it and why? */
-#define YOSH_STANDARD_STRING_EXT_VAL 10 /**< length in symbols of string extend
-                                             increment */
 
 /** \brief identifiers of linked list payload 
  *         \note TODO: check for unused */

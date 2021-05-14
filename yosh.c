@@ -1,6 +1,7 @@
 #include "yosh.h"
 #include <stddef.h>
 #include "containers/lists.h"
+#include "containers/strings.h"
 #include "builtin/help.h"
 #include "builtin/about.h"
 #include "builtin/exit.h"
@@ -15,16 +16,9 @@ typedef struct
   char*       arg;
 } yosh_arg_list_t;
 
-/** \brief this type is a part of string container */
-typedef struct //yosh_string_t
-{ char*  s;    ///< pointer to the string
-  size_t len;  ///< length of the string
-  char*  iter; ///< iterator which represent next symbol for reading
-} yosh_string_t;
-
 /** \brief this type is used by parser */
 typedef struct //yosh_data_t
-{ yosh_string_t*     input;        ///< string of a user input
+{ cont_string_t*     input;        ///< string of a user input
   char*              cur_char;     /* TODO: write description */
   char*              greet_string; /**< string which will be  printed at start
                                         of new line */
@@ -87,44 +81,6 @@ int yosh_strcmp_dumb(const char* str1, const char* str2)
   if (*str1 != *str2) { return 0; } //if one string is shorter another
 
   return 1; }
-
-/** \brief   part of string container. creates a new string
- *  \details dynamically allocates memory
- *           \note TODO: make repository for container and move it there
- *  \arg     d yosh descriptor. need to take malloc function
- *  \arg     n size of string
- *  \return  poi nter to created string or error sequence
- *  \retval  null  error sequence
- *  \retval  !null valid pointer */
-yosh_string_t* yosh_new_string(yosh_data_t* d, size_t n)
-{ yosh_string_t* ret = d->env.calls.malloc(sizeof(yosh_string_t));
-  ret->s = d->env.calls.malloc(n);
-  yosh_memset_dumb(ret->s, 0, n);
-  ret->len = n; ret->iter = ret->s;
-  return ret; }
-
-/** \brief   part of string container. deletes an existing string
- *  \details dynamically free memory
- *           \note TODO: make repository for container and move it there
- *  \arg     d yosh descriptor. need to take free function
- *  \arg     s pointer to a string container */
-void yosh_del_string(yosh_data_t* d, yosh_string_t* s)
-{ d->env.calls.free(s->s); d->env.calls.free(s); }
-
-yosh_string_t* yosh_ext_string(yosh_data_t* d, yosh_string_t* s, size_t n)
-{ if (n == 0) { n = YOSH_STANDARD_STRING_EXT_VAL; }
-  yosh_string_t* ret = yosh_new_string(d, s->len + n);
-  yosh_memcpy_dumb(ret->s, s->s, s->len);
-  ret->len = s->len + n;
-  ret->iter = ret->s + (s->iter - s->s);
-  yosh_del_string(d, s);
-  return ret; }
-
-void yosh_string_add_char(yosh_data_t* d, yosh_string_t** s, char ch)
-{ *(*s)->iter = ch; (*s)->iter++;
-
-  if ((*s)->iter >= (*s)->s + (*s)->len) 
-  { *s = yosh_ext_string(d, *s, 0); } }
 
 void yosh_del_input(yosh_data_t* desc)
 { if (!desc) { return; }
