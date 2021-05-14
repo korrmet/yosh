@@ -2,6 +2,7 @@
 #define YOSH_H
 
 #include <stddef.h>
+#include "containers/lists.h"
 
 #define YOSH_STANDARD_INPUT_LEN      40 /**< length of standard input in chars
                                              \note automatically extended, not
@@ -12,40 +13,24 @@
 
 /** \brief identifiers of linked list payload 
  *         \note TODO: check for unused */
-typedef enum //yosh_list_id_t
-{ YOSH_LIST_ID__ARG     = 0,
-  YOSH_LIST_ID__APP     = 1,
-  YOSH_LIST_ID__ENV_VAR = 2
-} yosh_list_id_t;
+typedef enum //cont_list_id_t
+{ cont_list_ID__ARG     = 0,
+  cont_list_ID__APP     = 1,
+  cont_list_ID__ENV_VAR = 2
+} cont_list_id_t;
 
-/** \brief interface of linked list
- *         \note TODO: create containers repo and add it there */
-typedef struct yosh_list
-{ struct yosh_list* next;
-  struct yosh_list* prev;
-  unsigned int      payload_id;
-} yosh_list_t;
-
-void* yosh_list_init(void* list, unsigned int payload_id);
-void* yosh_list_detach(void* list);
-void* yosh_list_first(void* list);
-void* yosh_list_last(void* list);
-void* yosh_list_insert_before(void* list, void* item);
-void* yosh_list_insert_after(void* list, void* item);
-void* yosh_list_append(void* list, void* item);
-void* yosh_list_prepend(void* list, void* item);
 
 /** \brief   type of argument
  *  \details set of strings inside linked list container */
 typedef struct //yosh_arg_t
-{ yosh_list_t l;
+{ cont_list_t l;
   char*       str;
 } yosh_arg_t;
 
 /** \brief   shell environment variable
  *  \details pair of strings name-value packed in linked list container */
 typedef struct //yosh_var_t
-{ yosh_list_t l;
+{ cont_list_t l;
   char* name;
   char* value;
 } yosh_var_t;
@@ -81,7 +66,7 @@ typedef enum //yosh_state_t
  *           \note every shell application take this descriptor */
 typedef struct //yosh_env_t
 { yosh_calls_t calls;            /**< syscalls */
-  yosh_list_t* user_apps;        /**< list of your apps. 
+  cont_list_t* user_apps;        /**< list of your apps. 
                                       \note add it using container api */
   yosh_app_t** builtin_apps;     /**< list of built-in apps. 
                                       \note don't modify it */
@@ -95,7 +80,7 @@ typedef struct //yosh_env_t
 typedef int (*yosh_func_t)(yosh_env_t* env, yosh_arg_t* args);
 
 typedef struct //yosh_app_list_t
-{ yosh_list_t l;
+{ cont_list_t l;
   yosh_app_t* app;
 } yosh_app_list_t;
 

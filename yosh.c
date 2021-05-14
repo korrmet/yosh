@@ -1,5 +1,6 @@
 #include "yosh.h"
 #include <stddef.h>
+#include "containers/lists.h"
 #include "builtin/help.h"
 #include "builtin/about.h"
 #include "builtin/exit.h"
@@ -10,7 +11,7 @@ yosh_app_t* yosh_builtin_apps[] = { &yosh_builtin_help,
 
 /** \brief this type is used for argument passing into command functions */
 typedef struct
-{ yosh_list_t list;
+{ cont_list_t list;
   char*       arg;
 } yosh_arg_list_t;
 
@@ -43,119 +44,8 @@ typedef struct //yosh_data_t
 void yosh_puts(yosh_env_t* e, const char* s)
 { while (*s != 0) { e->calls.putchar(*s); s++; } }
 
-/** \brief   initialize linked list root node structure
- *           \note TODO: move to another file
- *  \arg     list       pointer to a root node of list
- *  \arg     payload_id identifier of payloaded data type
- *                      \note this field is not necessary for linkde list
- *                            mechanisms theirselves but useful for a user
- *                            TODO: maybe deprecate?
- *  \return  pointer to a root node of list */
-void* yosh_list_init(void* list, unsigned int payload_id)
-{ yosh_list_t* l = (yosh_list_t*)list;
 
-  l->next = NULL; l->prev = NULL; l->payload_id = payload_id;
 
-  return l; }
-
-/** \brief   exclude element from linked list
- *  \details just redefine next and prev pointers
- *           \note TODO: add validation check
- *           \note TODO: move to another file
- *  \arg     list pointer to item be detached
- *                \note TODO: rename to "item"
- *  \return  pointer to detached item*/ 
-void* yosh_list_detach(void* list)
-{ yosh_list_t* l = (yosh_list_t*)list;
-  
-  if (l->prev) { l->prev->next = l->next; }
-  if (l->next) { l->next->prev = l->prev; }
-
-  return l; }
-
-/** \brief   find first (root) item in list
- *  \details search by chain in previous
- *           \note TODO; add circle detecton
- *           \note TODO: move to another file
- *  \arg     list pointer to any item in list
- *                \note TODO: rename to "item"
- *  \return  pointer to first (root) item */
-void* yosh_list_first(void* list)
-{ yosh_list_t* l = (yosh_list_t*)list;
-
-  while (l->prev != NULL) { l = l->prev; }
-
-  return l; }
-
-/** \brief   find last item in list
- *  \details search by chain in nexts
- *           \note TODO: add circle detection
- *           \note TODO: move to another file
- *  \arg     list pointer to any item in list
- *                \note TODO: rename to "item"
- *  \return  pointer to last item */
-void* yosh_list_last(void* list)
-{ yosh_list_t* l = (yosh_list_t*)list;
-
-  while (l->next != NULL) { l = l->next; }
-
-  return l; }
-
-/** \brief   insert item in list before selected
- *  \details manipulates prev and next pointers
- *           \note TODO: make arguments validation
- *           \note TODO: move to another file
- *  \arg     list any item in list
- *                \note TODO: rename to "dest"
- *  \arg     item item to be inserted in list
- *  \return  pointer to inserted item */
-void* yosh_list_insert_before(void* list, void* item)
-{ yosh_list_t* prev = ((yosh_list_t*)list)->prev;
-  yosh_list_t* next = (yosh_list_t*)list;
-  yosh_list_t* i    = (yosh_list_t*)item;
-
-  i->prev = prev; i->next = next;
-  if (prev) { prev->next = i; }
-  if (next) { next->prev = i; }
-
-  return i; }
-
-/** \brief   insert item in list after selected
- *  \details manipulates prev and next pointers
- *           \note TODO: make arguments validation
- *           \note TODO: move to another file
- *  \arg     list any item in list
- *                \note TODO: rename to "dest"
- *  \arg     item item to be inserted in list
- *  \return  pointer to inserted item */
-void* yosh_list_insert_after(void* list, void* item)
-{ yosh_list_t* prev = (yosh_list_t*)list;
-  yosh_list_t* next = ((yosh_list_t*)list)->next;
-  yosh_list_t* i    = (yosh_list_t*)item;
-
-  i->prev = prev; i->next = next;
-  if (prev) { prev->next = i; }
-  if (next) { next->prev = i; }
-
-  return i; }
-
-/** \brief   insert item in last position in linked list
- *  \details search last item and insert after it
- *           \note TODO: move to another file
- *  \arg     list any item of target list
- *  \arg     item item to be appended
- *  \return  pointer to appended item*/
-void* yosh_list_append(void* list, void* item)
-{ return yosh_list_insert_after(yosh_list_last(list), item); }
-
-/** \brief   insert item in first (root) position of linked list
- *  \details search first item and insert before it
- *           \note TODO: move to another file
- *  \arg     list any item of target list
- *  \arg     item item to be prepended
- *  \return  pointer to prepended item */
-void* yosh_list_prepend(void* list, void* item)
-{ return yosh_list_insert_before(yosh_list_first(list), item); } 
 
 /** \brief   memcpyy replacement. copy n bytes of data from source to 
  *           destination
@@ -271,7 +161,7 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   if (!shell_desc) { return NULL; }
   shell_desc->env.calls            = init_struct->calls;
   shell_desc->greet_string         = init_struct->greet_string;
-  shell_desc->env.user_apps        = (yosh_list_t*)init_struct->user_apps;
+  shell_desc->env.user_apps        = (cont_list_t*)init_struct->user_apps;
   shell_desc->env.builtin_apps     = yosh_builtin_apps;
   shell_desc->env.builtin_apps_len = sizeof(yosh_builtin_apps) /
                                      sizeof(yosh_builtin_apps[0]);
@@ -312,18 +202,18 @@ int yosh_parser(yosh_data_t* desc)
 
       if (arg_list == NULL) 
       { arg_list = desc->env.calls.malloc(sizeof(yosh_arg_t));
-        yosh_list_init(arg_list, 0); }
+        cont_list_init(arg_list, 0); }
       else 
       { yosh_arg_t* tmp_arg = desc->env.calls.malloc(sizeof(yosh_arg_t));
-        yosh_list_init(tmp_arg, 0);
-        arg_list = yosh_list_append(arg_list, tmp_arg); }
+        cont_list_init(tmp_arg, 0);
+        arg_list = cont_list_append(arg_list, tmp_arg); }
 
       arg_list->str = cur; }
 
     cur++; }
 
   if (arg_list != NULL)
-  { arg_list = yosh_list_first(arg_list);
+  { arg_list = cont_list_first(arg_list);
     
     if (yosh_try_run(desc, arg_list) == 0)
     { yosh_puts(&desc->env, "unknown command: ");
