@@ -89,7 +89,6 @@ typedef struct //yosh_init_struct_t
 } yosh_init_struct_t;
 
 void yosh_puts(yosh_env_t* e, const char* s);
-int yosh_strcmp_dumb(const char* str1, const char* str2);
 void* yosh_start(const yosh_init_struct_t* init_struct);
 int yosh_input(char ch, void* shell_desc);
 

@@ -43,20 +43,20 @@ void yosh_del_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
 
-  yosh_del_string(desc, desc->input);
+  cont_del_string(desc, desc->input);
 
   desc->input = NULL; }
 
 void yosh_new_input(yosh_data_t* desc)
 { if (!desc) { return; }
 
-  desc->input = yosh_new_string(desc, YOSH_STANDARD_INPUT_LEN); }
+  desc->input = cont_new_string(desc, YOSH_STANDARD_INPUT_LEN); }
 
 void yosh_ext_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
 
-  desc->input = yosh_ext_string(desc, desc->input, YOSH_STANDARD_INPUT_LEN); }
+  desc->input = cont_ext_string(desc, desc->input, YOSH_STANDARD_INPUT_LEN); }
 
 int yosh_quit_flag = 0;
 
@@ -159,7 +159,7 @@ int yosh_input(char ch, void* shell_desc)
       
       yosh_greet((yosh_data_t*)shell_desc);
     } break;
-    default: yosh_string_add_char(d, &d->input, ch); break; }
+    default: cont_string_add_char(d, &d->input, ch); break; }
 
   return 0; }
 
