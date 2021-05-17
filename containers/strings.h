@@ -12,10 +12,16 @@ typedef struct //yosh_string_t
 
 /** \brief   malloc and free functions pointers
  *  \details needed to provide string container with multiple API's in one
- *           project */
+ *           project. this featue may be imposrtant for embedded systems which
+ *           may contain multiple components developed for baremetal systems and
+ *           each contains it's own implementation of malloc and requires you
+ *           to use it only. */
 typedef struct //cont_string_calls_t
 { void* (*malloc)(size_t size); /**< allocate memory */
   void  (*free)(void* ptr);     /**< free allocated memory */
+  void  (*memcpy)(void* dst, void* src, size_t n);
+  void  (*memset)(void* dst, char val, size_t n);
+  int   (*strcmp)(const char* str1, const char* str2);
 } cont_string_calls_t;
 
 /** \brief   part of string container. creates a new string
