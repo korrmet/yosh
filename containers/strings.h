@@ -24,17 +24,48 @@ typedef struct //yosh_string_t
   char*  iter; ///< iterator which represent next symbol for reading
 } cont_string_t;
 
-/** \brief   malloc and free functions pointers
+/** \brief   some stuff of standard library
  *  \details needed to provide string container with multiple API's in one
  *           project. this featue may be imposrtant for embedded systems which
  *           may contain multiple components developed for baremetal systems and
  *           each contains it's own implementation of malloc and requires you
  *           to use it only. */
 typedef struct //cont_string_calls_t
-{ void* (*malloc)(size_t size); /**< allocate memory */
-  void  (*free)(void* ptr);     /**< free allocated memory */
+{ /** \brief   allocate memory
+   *  \details signature is similar to standard malloc
+   *  \arg     size size of memory you going to allocate
+   *  \return  pointer to allocated memory or error sequence
+   *  \retval  NULL  error
+   *  \retval  !NULL valid pointer */
+  void* (*malloc)(size_t size);
+
+  /** \brief   free memory
+   *  \details signature is similar to standard free
+   *  \arg     ptr pointer to memory you going to free */
+  void  (*free)(void* ptr);
+
+  /** \brief   copy memory
+   *  \details signature is similar to standard memcpy
+   *  \arg     dst pointer to destination memory area
+   *  \arg     src pointer to source memory area
+   *  \arg     n   size in bytes of memory which will be copied */
   void  (*memcpy)(void* dst, void* src, size_t n);
+
+  /** \brief   fill memory by specific character
+   *  \details signature is similar to standard memset
+   *  \arg     dst pointer to destination memory area
+   *  \arg     val character to fill memosy
+   *  \arg     n   size in bytes of memory shich you going to fill */
   void  (*memset)(void* dst, char val, size_t n);
+
+  /** \brief   compare to strings
+   *  \details signature is similar to standard strcmp
+   *  \arg     str1 pointer to first string to compare
+   *  \arg     str2 pointer to second string to compare
+   *  \return  result of comparsion or error sequence
+   *  \retval  <0 error occured/can't compare
+   *  \retval  0  strings are equal
+   *  \retval  >0 number of char where strings start to differ */
   int   (*strcmp)(const char* str1, const char* str2);
 } cont_string_calls_t;
 

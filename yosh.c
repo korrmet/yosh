@@ -43,20 +43,21 @@ void yosh_del_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
 
-  cont_del_string(desc, desc->input);
+  cont_del_string(&desc->env.strcalls, desc->input);
 
   desc->input = NULL; }
 
 void yosh_new_input(yosh_data_t* desc)
 { if (!desc) { return; }
 
-  desc->input = cont_new_string(desc, YOSH_STANDARD_INPUT_LEN); }
+  desc->input = cont_new_string(&desc->env.strcalls, YOSH_STANDARD_INPUT_LEN); }
 
 void yosh_ext_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
 
-  desc->input = cont_ext_string(desc, desc->input, YOSH_STANDARD_INPUT_LEN); }
+  desc->input = cont_ext_string(&desc->env.strcalls, desc->input, 
+                                YOSH_STANDARD_INPUT_LEN); }
 
 int yosh_quit_flag = 0;
 
@@ -72,12 +73,16 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   yosh_data_t* shell_desc = 
     (yosh_data_t*)init_struct->calls.malloc(sizeof(yosh_data_t));
   if (!shell_desc) { return NULL; }
+
   shell_desc->env.calls            = init_struct->calls;
   shell_desc->greet_string         = init_struct->greet_string;
   shell_desc->env.user_apps        = (cont_list_t*)init_struct->user_apps;
   shell_desc->env.builtin_apps     = yosh_builtin_apps;
   shell_desc->env.builtin_apps_len = sizeof(yosh_builtin_apps) /
                                      sizeof(yosh_builtin_apps[0]);
+
+  shell_desc->env.strcalls.free   = init_struct->calls.free;
+  shell_desc->env.strcalls.malloc = init_struct->calls.malloc;
   
   yosh_new_input(shell_desc);
 
