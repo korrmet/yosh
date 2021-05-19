@@ -60,6 +60,7 @@ typedef struct //cont_string_calls_t
 
   /** \brief   compare to strings
    *  \details signature is similar to standard strcmp
+   *           \note TODO: maybe memcmp will be better?
    *  \arg     str1 pointer to first string to compare
    *  \arg     str2 pointer to second string to compare
    *  \return  result of comparsion or error sequence

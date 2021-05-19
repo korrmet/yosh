@@ -36,10 +36,50 @@ typedef struct //yosh_var_t
 
 /** \brief   syscalls which shell use in it's work */
 typedef struct //yosh_calls_t
-{ int              (*putchar)(int ch);     /**< send one char to io device  */
+{ /** \brief   allocate memory
+   *  \details signature is similar to standard malloc
+   *  \arg     size size of memory you going to allocate
+   *  \return  pointer to allocated memory or error sequence
+   *  \retval  NULL  error
+   *  \retval  !NULL valid pointer */
+  void* (*malloc)(size_t size);
+
+  /** \brief   free memory
+   *  \details signature is similar to standard free
+   *  \arg     ptr pointer to memory you going to free */
+  void  (*free)(void* ptr);
+
+  /** \brief   send one char to io device
+   *  \details signature is similar to standard putchar
+   *           \note TODO: check it
+   *  \arg     ch char to be sended from shell to io device (e.g. uart) or
+   *              data exchange protocol
+   *  \return  result of sending
+   *  \retval  0 ok
+   *  \retval  <0 error occured */
+  int              (*putchar)(int ch);
+
+  /** \brief   get one char from io device. this function shall block thread
+   *           while char is getting.
+   *  \details signature is similar to standard getchar
+   *           \noote TODO: check it
+   *  \return  character or error sequence
+   *           \note TODO: inspect maybe retval <0 should be deprecated or
+   *                       this function must be non-blocking
+   *  \retval  0-255 valid ascii character
+   *  \retval  <0 error occured */
   int              (*getchar)(void);       /**< get one char from io device */
-  void*            (*malloc)(size_t size); /**< allocate memory */
-  void             (*free)(void* ptr);     /**< free allocated memory */
+  
+  /** \brief   compare to strings
+   *  \details signature is similar to standard strcmp
+   *           \note TODO: maybe memcmp will be better?
+   *  \arg     str1 pointer to first string to compare
+   *  \arg     str2 pointer to second string to compare
+   *  \return  result of comparsion or error sequence
+   *  \retval  <0 error occured/can't compare
+   *  \retval  0  strings are equal
+   *  \retval  >0 number of char where strings start to differ */
+  int   (*strcmp)(const char* str1, const char* str2);
 } yosh_calls_t;
 
 /** \brief   application descriptor */
@@ -92,7 +132,7 @@ typedef int (*yosh_func_t)(yosh_env_t* env, yosh_arg_t* args);
 /** \brief   list of apps that user want to run
  *  \details may be changed in runtime */
 typedef struct //yosh_app_list_t
-{ cont_list_t l;   /**< list container part
+{ cont_list_t l;   /**< list container part */
   yosh_app_t* app; /**< application pointer */
 } yosh_app_list_t;
 

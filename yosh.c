@@ -38,7 +38,6 @@ typedef struct //yosh_data_t
 void yosh_puts(yosh_env_t* e, const char* s)
 { while (*s != 0) { e->calls.putchar(*s); s++; } }
 
-
 void yosh_del_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
@@ -79,7 +78,7 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   shell_desc->env.user_apps        = (cont_list_t*)init_struct->user_apps;
   shell_desc->env.builtin_apps     = yosh_builtin_apps;
   shell_desc->env.builtin_apps_len = sizeof(yosh_builtin_apps) /
-                                     sizeof(yosh_builtin_apps[0]);
+                                     sizeof(yosh_app_t);
 
   shell_desc->env.strcalls.free   = init_struct->calls.free;
   shell_desc->env.strcalls.malloc = init_struct->calls.malloc;
@@ -92,13 +91,13 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
 
 int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
 { for (unsigned int i = 0; i < d->env.builtin_apps_len; i++)
-  { if (yosh_strcmp_dumb(args->str, d->env.builtin_apps[i]->name))
+  { if (d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
     { ((yosh_func_t)d->env.builtin_apps[i]->ptr)(&d->env, args);
       return 1; } }
   
   yosh_app_list_t* usr = (yosh_app_list_t*)d->env.user_apps;
   while (usr != NULL)
-  { if (yosh_strcmp_dumb(args->str, usr->app->name)) 
+  { if (d->env.calls.strcmp(args->str, usr->app->name)) 
     { ((yosh_func_t)usr->app->ptr)(&d->env, args); return 1; } 
     usr = (yosh_app_list_t*)usr->l.next; }
 
@@ -164,7 +163,7 @@ int yosh_input(char ch, void* shell_desc)
       
       yosh_greet((yosh_data_t*)shell_desc);
     } break;
-    default: cont_string_add_char(d, &d->input, ch); break; }
+    default: cont_string_add_char(&d->env.strcalls, &d->input, ch); break; }
 
   return 0; }
 
