@@ -78,7 +78,7 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   shell_desc->env.user_apps        = (cont_list_t*)init_struct->user_apps;
   shell_desc->env.builtin_apps     = yosh_builtin_apps;
   shell_desc->env.builtin_apps_len = sizeof(yosh_builtin_apps) /
-                                     sizeof(yosh_app_t);
+                                     sizeof(yosh_app_t*);
 
   shell_desc->env.strcalls.free   = init_struct->calls.free;
   shell_desc->env.strcalls.malloc = init_struct->calls.malloc;

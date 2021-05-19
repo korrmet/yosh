@@ -147,7 +147,21 @@ typedef struct //yosh_init_struct_t
 } yosh_init_struct_t;
 
 void yosh_puts(yosh_env_t* e, const char* s);
+
+/** \brief   start shell
+ *  \details initialize variables of shell object. dynamically allocates memory
+ *           for it, validates init structure and fill object fields. after
+ *           this action your shell is ready to use
+ *  \arg     init_struct initialization structure
+ *  \return  shell object descriptor or error sequence
+ *  \retval  NULL  error occured
+ *  \retval  !NULL valid pointer to shell object descriptor */
 void* yosh_start(const yosh_init_struct_t* init_struct);
+
+/** \brief   input point of your shell
+ *  \details place every new symbol here. this may block your thread.
+ *  \arg     ch
+ *  \arg     shell_desc */
 int yosh_input(char ch, void* shell_desc);
 
 #endif//YOSH_H
