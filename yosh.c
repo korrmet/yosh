@@ -38,6 +38,9 @@ typedef struct //yosh_data_t
 void yosh_puts(yosh_env_t* e, const char* s)
 { while (*s != 0) { e->calls.putchar(*s); s++; } }
 
+/** \brief   deletes data of user input
+ *  \details actually it's just adapter for a string container part
+ *  \arg     desc shell descriptor */
 void yosh_del_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
@@ -46,11 +49,17 @@ void yosh_del_input(yosh_data_t* desc)
 
   desc->input = NULL; }
 
+/** \brief   creates buffer for user input data
+ *  \details actually it's just adapter for a string container part
+ *  \arg     desc shell descriptor */
 void yosh_new_input(yosh_data_t* desc)
 { if (!desc) { return; }
 
   desc->input = cont_new_string(&desc->env.strcalls, YOSH_STANDARD_INPUT_LEN); }
 
+/** \brief   manually extends buffer for user input data
+ *  \details actually it's just adapter for a string container part
+ *  \arg     desc shell descriptor */
 void yosh_ext_input(yosh_data_t* desc)
 { if (!desc) { return; }
   if (desc->input == NULL) { return; }
@@ -60,6 +69,9 @@ void yosh_ext_input(yosh_data_t* desc)
 
 int yosh_quit_flag = 0;
 
+/** \brief   prints greet string before user be able to input
+ *  \details will be deprecated soon
+ *  \arg     desc descriptor of the shell */
 void yosh_greet(yosh_data_t* desc);
 
 void* yosh_start(const yosh_init_struct_t* init_struct)
