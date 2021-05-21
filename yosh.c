@@ -101,6 +101,17 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
 
   return (void*)shell_desc; }
 
+/** \brief   runs user and builtin functions
+ *  \details search for function name in builtin and user functions lists. first
+ *           argument is a function name as in *nix shells so it is data for
+ *           search.
+ *           \note this code soon be obsoleted because planned displaying result
+ *                 to user
+ *  \arg     d    shell descriptor
+ *  \arg     args argumen for call
+ *  \return  result of run
+ *  \retval  0 nothing to run
+ *  \retval  1 function runs normally */
 int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
 { for (unsigned int i = 0; i < d->env.builtin_apps_len; i++)
   { if (d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
@@ -115,6 +126,19 @@ int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
 
   return 0; }
 
+/** \brief   user input parser
+ *  \details one pass parser. it changes any non-literal symbols of input string
+ *           to zeros, also it creates linked list of pointers to first literal
+ *           of any word which after will be passed to user functions as
+ *           argument. literal means any symbol exclude whitespace for all
+ *           input string width. after that it runs builtin and user functions
+ *           and clean-up used memory
+ *           \note TODO: it contains manual operations on containers. replace
+ *                       if possible
+ *  \arg     desc shell desccriptor
+ *  \return  error sequence
+ *  \retval  0  all ok
+ *  \retval  -1 error occure while parsing */
 int yosh_parser(yosh_data_t* desc)
 { if (!desc) { return -1; }
   

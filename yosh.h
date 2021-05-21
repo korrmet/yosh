@@ -158,6 +158,10 @@ void* yosh_start(const yosh_init_struct_t* init_struct);
 
 /** \brief   input point of your shell
  *  \details place every new symbol here. this may block your thread.
+ *           accumulate data what user types into terminal and start parsing it
+ *           after passing new line or return carriage symbol. also in this
+ *           thread user functions are called so this is a reason why it can
+ *           block current thread
  *  \arg     ch         ASCII character
  *  \arg     shell_desc descriptor of the shell
  *                      \note only one method of getting it valid - using
