@@ -146,8 +146,6 @@ typedef struct //yosh_init_struct_t
                                       \note deprecated field */
 } yosh_init_struct_t;
 
-void yosh_puts(yosh_env_t* e, const char* s);
-
 /** \brief   start shell
  *  \details initialize variables of shell object. dynamically allocates memory
  *           for it, validates init structure and fill object fields. after
@@ -160,8 +158,18 @@ void* yosh_start(const yosh_init_struct_t* init_struct);
 
 /** \brief   input point of your shell
  *  \details place every new symbol here. this may block your thread.
- *  \arg     ch
- *  \arg     shell_desc */
+ *  \arg     ch         ASCII character
+ *  \arg     shell_desc descriptor of the shell
+ *                      \note only one method of getting it valid - using
+ *                            yosh_start
+ *  \return  result of shell execution
+ *           \note shell result and shell functio n result are diffirent things.
+ *                 shell function result remains only in shell and you can't
+ *                 capture this moment outside. also shell function result
+ *                 can't directly make effect on shell behavor.
+ *  \retval  0  ok
+ *  \retval  1  shell halted normally
+ *  \retval  -1 error occured. e.g. function descriptor corrupted  */
 int yosh_input(char ch, void* shell_desc);
 
 #endif//YOSH_H
