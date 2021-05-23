@@ -29,6 +29,11 @@ it's enough for develop own shell which i can use in my job.
 # Status
 Just start developing but usable.
 
+# Project structure
+
+Architecture of this project close to microkernel. There is core which provide
+main features/
+
 # Plans
 - implement output redirect to another command
 - implement braces for manual argument borders
