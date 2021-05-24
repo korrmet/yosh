@@ -32,7 +32,36 @@ Just start developing but usable.
 # Project structure
 
 Architecture of this project close to microkernel. There is core which provide
-main features/
+main features and some isolated plugins. Also core has dependencies on code
+which provide common behavour for multiple projects.
+
+```
+. . . . . . . . . . . . . . . . 
+.                             .
+. +-------+ +------+ +------+ .
+. | about | | help | | exit | .
+. +-------+ +------+ +------+ .
+.     |         |        |    .
+.     +---------+--------+    .
+.               |             .
+.          +---------+        .        +-----------+ +------------+
+.          | builtin |        .        | dumbtools | | containers |
+.          +---------+        .        +-----------+ +------------+
+.               |             . . . . . .    |             |
+.               +-----------------+----------+-------------+
+.                                 |     .
+.                             +------+  .
+.                             | Core |  .
+.                             +------+  .
+.                                       .
+. . . . . . . . . . . . . . . . . . . . .
+```
+
+On drawing dotted area represents kernel. Also Core have interface for user
+applications which can be connected in runtime. Entities outside of dotted area
+are submodules. Nowdays it's not clearly isolated tools and you can't easily
+use cuctom of it because their interface used directly inside core entities, but
+it will be fixed soon.
 
 # Plans
 - implement output redirect to another command
@@ -43,3 +72,4 @@ main features/
 - implement adding user commands in running shell
 - make tests, readme and doxygen comments in code
 - white documentation and guidelines about using this shell
+- fix dependencies interfaces
