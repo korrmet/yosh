@@ -63,6 +63,35 @@ are submodules. Nowdays it's not clearly isolated tools and you can't easily
 use cuctom of it because their interface used directly inside core entities, but
 it will be fixed soon.
 
+# Build
+
+```
+make release
+```
+
+or
+
+```
+make debug
+```
+
+# Testing
+
+At present day it has only sandbox. It is not test but so close so i decided
+include it in testing folder. In common to run test you need:
+
+```
+make sandbox
+```
+
+to run unit tests:
+
+```
+make test_all
+```
+
+Nowday it is not implemented but soon i will do it.
+
 # Plans
 - implement output redirect to another command
 - implement braces for manual argument borders

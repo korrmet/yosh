@@ -1,9 +1,10 @@
-all:
-	$(CC) -Wall -pedantic -g3 -gdwarf \
-		-I ./ -I builtin \
-		yosh.c builtin/help.c builtin/about.c builtin/exit.c\
-		sandbox.c \
-		-o sandbox
+all: release
+
+release:
+	mkdir -p release
+
+debug:
+	mkdir -p debug
 
 clean:
 	rm -rf test sandbox
