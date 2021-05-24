@@ -1,10 +1,7 @@
-all: release
+all:
 
-release:
-	mkdir -p release
-
-debug:
-	mkdir -p debug
+builtin/about.o:
+	$(CC) -c -MMD builtin/about.c $(CFLAGS) -o build/builtin/about.c
 
 clean:
 	rm -rf test sandbox
