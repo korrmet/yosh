@@ -57,7 +57,14 @@ typedef struct //yosh_calls_t
    *  \return  result of sending
    *  \retval  0 ok
    *  \retval  <0 error occured */
-  int              (*putchar)(int ch);
+  int              (*putchar)(char ch);
+  /** \brief   print string in io device
+   *  \details cyclic calls putchar
+   *  \arg     s pointer to c-string
+   *  \return  error sequence or sended chars
+   *  \retval  <0  error
+   *  \retval  >=0 chars sended */
+  int              (*puts)(char* s);
 
   /** \brief   get one char from io device. this function shall block thread
    *           while char is getting.
@@ -69,7 +76,7 @@ typedef struct //yosh_calls_t
    *  \retval  0-255 valid ascii character
    *  \retval  <0 error occured */
   int              (*getchar)(void);       /**< get one char from io device */
-  
+
   /** \brief   compare to strings
    *  \details signature is similar to standard strcmp
    *           \note TODO: maybe memcmp will be better?
