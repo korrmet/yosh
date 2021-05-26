@@ -3,12 +3,13 @@ DEFINES  +=
 override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR = ./build
 
-all: tests yosh
+all: $(BUILD_DIR)/libyosh.a
 
-yosh: $(BUILD_DIR)/yosh.o \
-	    $(BUILD_DIR)/builtin/about.o \
-	    $(BUILD_DIR)/builtin/exit.o \
-		  $(BUILD_DIR)/builtin/help.o
+$(BUILD_DIR)/libyosh.a: $(BUILD_DIR)/yosh.o \
+                        $(BUILD_DIR)/builtin/about.o \
+                        $(BUILD_DIR)/builtin/exit.o \
+                        $(BUILD_DIR)/builtin/help.o
+	$(AR) $(ARFLAGS) $(BUILD_DIR)/libyosh.a $?
 
 $(BUILD_DIR)/builtin/about.o:
 	mkdir -p build/builtin
