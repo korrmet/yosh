@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include "yosh.h"
+#include "yosh_app_api.h"
 #include "builtin/about.h"
 
 int yosh_about(yosh_env_t* env, yosh_arg_t* args);

@@ -18,7 +18,6 @@ typedef enum //cont_list_id_t
   cont_list_ID__ENV_VAR = 2
 } cont_list_id_t;
 
-
 /** \brief   type of argument
  *  \details set of strings inside linked list container */
 typedef struct //yosh_arg_t
@@ -58,13 +57,6 @@ typedef struct //yosh_calls_t
    *  \retval  0 ok
    *  \retval  <0 error occured */
   int              (*putchar)(char ch);
-  /** \brief   print string in io device
-   *  \details cyclic calls putchar
-   *  \arg     s pointer to c-string
-   *  \return  error sequence or sended chars
-   *  \retval  <0  error
-   *  \retval  >=0 chars sended */
-  int              (*puts)(char* s);
 
   /** \brief   get one char from io device. this function shall block thread
    *           while char is getting.

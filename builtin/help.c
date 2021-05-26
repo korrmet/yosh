@@ -1,5 +1,7 @@
 #include <stddef.h>
+#include "help.h"
 #include "yosh.h"
+#include "yosh_app_api.h"
 
 int yosh_help(yosh_env_t* env, yosh_arg_t* args);
 
@@ -89,7 +91,7 @@ int yosh_help(yosh_env_t* env, yosh_arg_t* args)
   else 
   { while (args)
     { for (unsigned int i = 0; i < yosh_builtin_help_data.topic_array_size; i++)
-      { if (yosh_strcmp_dumb(yosh_builtin_help_data.topic_array[i].name, 
+      { if (env->strcalls.strcmp(yosh_builtin_help_data.topic_array[i].name, 
                              args->str))
         { if (yosh_builtin_help_data.topic_array[i].description)
           { yosh_puts(env, yosh_builtin_help_data.topic_array[i].description); }

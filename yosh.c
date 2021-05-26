@@ -1,4 +1,5 @@
 #include "yosh.h"
+#include "yosh_app_api.h"
 #include <stddef.h>
 #include "containers/lists.h"
 #include "containers/strings.h"
@@ -30,13 +31,6 @@ typedef struct //yosh_data_t
   yosh_env_t         env;          /**< environment for commands and partionally
                                         for parser */
 } yosh_data_t;
-
-/** \brief   prints raw string in output buffer 
- *  \details as replacement to printf but without dependencies of any type
- *  \arg     e environment
- *  \arg     s string to pront */
-void yosh_puts(yosh_env_t* e, const char* s)
-{ while (*s != 0) { e->calls.putchar(*s); s++; } }
 
 /** \brief   deletes data of user input
  *  \details actually it's just adapter for a string container part
