@@ -1,7 +1,8 @@
-INCLUDES += -I./
-DEFINES  +=
+override INCLUDES += -I./
+override DEFINES  +=
 override CFLAGS += $(INCLUDES) $(DEFINES)
-BUILD_DIR = ./build
+BUILD_DIR   = ./build
+DISTRIB_DIR = ./dist
 
 all: $(BUILD_DIR)/libyosh.a
 
@@ -9,7 +10,14 @@ $(BUILD_DIR)/libyosh.a: $(BUILD_DIR)/yosh.o \
                         $(BUILD_DIR)/builtin/about.o \
                         $(BUILD_DIR)/builtin/exit.o \
                         $(BUILD_DIR)/builtin/help.o
-	$(AR) $(ARFLAGS) $(BUILD_DIR)/libyosh.a $?
+	mkdir -p $(DISTRIB_DIR)
+	$(AR) $(ARFLAGS) $(DISTRIB_DIR)/libyosh.a $?
+	mkdir -p $(DISTRIB_DIR)/inc
+	cp ./yosh.h
+	mkdir -p $(DISTRIB_DIR)/builtin
+	cp ./builtin/about.h $(DISTRIB_DIR)/builtin
+	cp ./builtin/exit.h  $(DISTRIB_DIR)/builtin
+	cp ./builtin/help.h  $(DISTRIB_DIR)/builtin
 
 $(BUILD_DIR)/builtin/about.o:
 	mkdir -p build/builtin
