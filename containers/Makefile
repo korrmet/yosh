@@ -4,9 +4,11 @@ override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR   = ./build
 DISTRIB_DIR = ./dist
 
-all: $(DISTRIB_DIR)/libcontainers.a \
-	   $(DISTRIB_DIR)/inc/lists.h \
-		 $(DISTRIB_DIR)/inc/strings.h
+all: containers
+
+containers: $(DISTRIB_DIR)/libcontainers.a \
+	          $(DISTRIB_DIR)/inc/lists.h \
+		        $(DISTRIB_DIR)/inc/strings.h
 
 $(DISTRIB_DIR)/libcontainers.a: $(BUILD_DIR)/lists.o \
 	                              $(BUILD_DIR)/strings.o
@@ -16,26 +18,22 @@ $(DISTRIB_DIR)/libcontainers.a: $(BUILD_DIR)/lists.o \
 $(BUILD_DIR)/lists.o: lists.c
 	mkdir -p $(dir $@)
 	$(CC) -c $<  $(CFLAGS) -o $@
+lists.c: lists.h
+lists.h:
+
+$(DISTRIB_DIR)/inc/lists.h: lists.h
+	mkdir -p $(dir $@)
+	cp $< $@
 
 $(BUILD_DIR)/strings.o: strings.c
 	mkdir -p $(dir $@)
 	$(CC) -c $<  $(CFLAGS) -o $@
-
-$(DISTRIB_DIR)/inc/lists.h: lists.h
-	mkdir -p $(dir $@)
-	cp $<  $@
+strings.c: strings.h
+strings.h:
 
 $(DISTRIB_DIR)/inc/strings.h: strings.h
 	mkdir -p $(dir $@)
-	cp $<  $@
-
-lists.c: lists.h
-
-strings.c: strings.h
-
-lists.h:
-
-strings.h:
+	cp $< $@
 
 .PHONY: clean
 
