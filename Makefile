@@ -24,10 +24,10 @@ $(DISTRIB_DIR)/libyosh.a: $(BUILD_DIR)/yosh.o \
 	@$(AR) $(ARFLAGS) $(DISTRIB_DIR)/libyosh.a $?
 
 $(BUILD_DIR)/builtin/about.o: builtin/about.c \
-	                            $(BUILD_DIR)/libcontainers.a
+	                            $(BUILD_DIR)/containers/libcontainers.a
 	@echo $@
 	@mkdir -p $(dir $@)
-	@$(CC) -c $< $(CFLAGS) -o $@
+	@$(CC) -c $< $(CFLAGS) -lcontainers -L$(BUILD_DIR)/containers -o $@
 builtin/about.c: builtin/about.h
 builtin/about.h:
 
@@ -37,10 +37,10 @@ $(DISTRIB_DIR)/inc/builtin/about.h: builtin/about.h
 	@cp $< $@
 
 $(BUILD_DIR)/builtin/exit.o: builtin/exit.c \
-	                           $(BUILD_DIR)/libcontainers.a
+	                           $(BUILD_DIR)/containers/libcontainers.a
 	@echo $@
 	@mkdir -p $(dir $@)
-	@$(CC) -c $< $(CFLAGS) -o $@
+	@$(CC) -c $< $(CFLAGS) -lcontainers -L$(BUILD_DIR)/containers -o $@
 builtin/exit.c: builtin/exit.h
 builtin/exit.h:
 
@@ -50,10 +50,10 @@ $(DISTRIB_DIR)/inc/builtin/exit.h: builtin/exit.h
 	@cp $< $@
 
 $(BUILD_DIR)/builtin/help.o: builtin/help.c \
-	                           $(BUILD_DIR)/libcontainers.a
+	                           $(BUILD_DIR)/containers/libcontainers.a
 	@echo $@
 	@mkdir -p $(dir $@)
-	@$(CC) -c $< $(CFLAGS) -o $@
+	@$(CC) -c $< $(CFLAGS) -lcontainers -L$(BUILD_DIR)/containers -o $@
 builtin/help.c: builtin/help.h
 builtin/help.h:
 
@@ -62,10 +62,11 @@ $(DISTRIB_DIR)/inc/builtin/help.h: builtin/help.h
 	@mkdir -p $(dir $@)
 	@cp $< $@
 
-$(BUILD_DIR)/yosh.o: yosh.c
+$(BUILD_DIR)/yosh.o: yosh.c \
+	                   $(BUILD_DIR)/containers/libcontainers.a
 	@echo $@
 	@mkdir -p $(dir $@)
-	@$(CC) -c $< $(CFLAGS) -o $@
+	@$(CC) -c $< $(CFLAGS) -lcontainers -L$(BUILD_DIR)/containers -o $@
 yosh.c: yosh.h builtin/about.h builtin/exit.h builtin/help.h
 yosh.h:
 
@@ -74,14 +75,10 @@ $(DISTRIB_DIR)/inc/yosh.h: yosh.h
 	@mkdir -p $(dir $@)
 	@cp $< $@
 
-$(BUILD_DIR)/libcontainers.a: containers/Makefile  \
-	                            containers/lists.c   \
-															containers/lists.h   \
-															containers/strings.c \
-															containers/strings.h
+$(BUILD_DIR)/containers/libcontainers.a:
 	@echo $@
 	@make -C containers BUILD_DIR=$(abspath $(BUILD_DIR)) \
-		                 DISTRIB_DIR=$(abspath $(BUILD_DIR))
+		                  DISTRIB_DIR=$(abspath $(BUILD_DIR))
 
 containers/Makefile:
 containers/lists.c:
