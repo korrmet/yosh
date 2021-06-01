@@ -16,7 +16,7 @@ $(DISTRIB_DIR)/libcontainers.a: $(BUILD_DIR)/lists.o \
 	                              $(BUILD_DIR)/strings.o
 	@echo $@
 	@mkdir -p $(DISTRIB_DIR)
-	@$(AR) $(ARFLAGS) $(DISTRIB_DIR)/libcontainers.a $?
+	@$(AR) $(ARFLAGS) $@ $?
 
 $(BUILD_DIR)/lists.o: lists.c
 	@echo $@
