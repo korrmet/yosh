@@ -1,16 +1,17 @@
-override INCLUDES += -I./
-override DEFINES  +=
+INCLUDES += -I./
+DEFINES  +=
 override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR   = ./build
 DISTRIB_DIR = ./dist
+INC_DIR     = ./$(DISTRIB_DIR)/inc
 
 .PHONY: clean
 
 all: containers
 
 containers: $(DISTRIB_DIR)/libcontainers.a \
-	          $(DISTRIB_DIR)/inc/lists.h \
-		        $(DISTRIB_DIR)/inc/strings.h
+	          $(INC_DIR)/lists.h \
+		        $(INC_DIR)/strings.h
 
 $(DISTRIB_DIR)/libcontainers.a: $(BUILD_DIR)/lists.o \
 	                              $(BUILD_DIR)/strings.o
@@ -25,7 +26,7 @@ $(BUILD_DIR)/lists.o: lists.c
 lists.c: lists.h
 lists.h:
 
-$(DISTRIB_DIR)/inc/lists.h: lists.h
+$(INC_DIR)/lists.h: lists.h
 	@echo $@
 	@mkdir -p $(dir $@)
 	@cp $< $@
@@ -37,7 +38,7 @@ $(BUILD_DIR)/strings.o: strings.c
 strings.c: strings.h
 strings.h:
 
-$(DISTRIB_DIR)/inc/strings.h: strings.h
+$(INC_DIR)/strings.h: strings.h
 	@echo $@
 	@mkdir -p $(dir $@)
 	@cp $< $@
