@@ -1,6 +1,6 @@
 INCLUDES += -I./
 DEFINES  +=
-override CFLAGS += $(INCLUDES) $(DEFINES) $(LIBS)
+override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR   = ./build
 DISTRIB_DIR = ./dist
 INC_DIR     = ./$(DISTRIB_DIR)/inc
@@ -76,13 +76,7 @@ $(BUILD_DIR)/containers/libcontainers.a:
 	@echo $@
 	@make -C containers BUILD_DIR=$(abspath $(dir $@)) \
 		                  DISTRIB_DIR=$(abspath $(dir $@)) \
-											INC_DIR=$(abspath $(dir $@))/inc
-
-containers/Makefile:
-containers/lists.c:
-containers/lists.h:
-containers/strings.c:
-containers/strings.h:
+											INC_DIR=$(abspath $(INC_DIR)/containers)
 
 sandbox: yosh
 
