@@ -1,9 +1,9 @@
-INCLUDES += -I./
+INCLUDES += -I$(abspath ./)
 DEFINES  +=
 override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR   = ./build
 DISTRIB_DIR = ./dist
-INC_DIR     = ./$(DISTRIB_DIR)/inc
+INC_DIR     = $(DISTRIB_DIR)/inc
 
 .PHONY: clean all yosh
 

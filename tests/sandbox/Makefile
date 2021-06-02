@@ -1,4 +1,5 @@
-INCLUDES += -I./
+INCLUDES += -I$(abspath ./)
+INCLUDES += -I$(abspath ./containers/)
 DEFINES  +=
 override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR   = ./build
@@ -7,11 +8,20 @@ BUILD_DIR   = ./build
 
 all: sandbox
 
-sandbox: $(BUILD_DIR)/yosh/libyosh.a
+sandbox: libs/yosh/libyosh.a \
+	       libs/dumbtools/libdumbtools.a
+	@echo $@
 
-$(BUILD_DIR)/yosh/libyosh.a:
+libs/yosh/libyosh.a:
 	@make -C ../../ BUILD_DIR=$(abspath $(BUILD_DIR)) \
-		              DISTRIB_DIR=$(abspath $(BUILD_DIR))
+		              DISTRIB_DIR=$(abspath $(dir $@)) \
+									INC_DIR=$(abspath ./libs/containers) \
+									CFLAGS=$(CFLAGS)
+
+libs/dumbtools/libdumbtools.a:
+	@make -C dumbtools/ BUILD_DIR=$(abspath $(BUILD_DIR)) \
+		                  DISTRIB_DIR=$(abspath $(dir $@)) \
+											CFLAGS=$(CFLAGS)
 
 clean:
-	@rm -rf build
+	@rm -rf build libs
