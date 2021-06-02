@@ -15,7 +15,6 @@ sandbox: libs/yosh/libyosh.a \
 libs/yosh/libyosh.a:
 	@make -C ../../ BUILD_DIR=$(abspath $(BUILD_DIR)) \
 		              DISTRIB_DIR=$(abspath $(dir $@)) \
-									INC_DIR=$(abspath ./libs/containers) \
 									CFLAGS=$(CFLAGS)
 
 libs/dumbtools/libdumbtools.a:
