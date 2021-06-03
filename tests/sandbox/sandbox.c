@@ -1,11 +1,13 @@
 #include "yosh.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 yosh_init_struct_t shell = { .calls = { .putchar = putchar,
                                         .getchar = getchar,
                                         .malloc  = malloc,
-                                        .free    = free },
+                                        .free    = free,
+                                        .strcmp  = strcmp },
                              .greet_string = "sandbox",
                              .user_apps = NULL };
 
