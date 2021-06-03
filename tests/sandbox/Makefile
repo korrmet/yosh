@@ -1,7 +1,11 @@
 INCLUDES += -I$(abspath ./)
-INCLUDES += -I$(abspath ./containers/)
+INCLUDES += -I$(abspath ./libs/yosh/inc)
+INCLUDES += -I$(abspath ./libs/yosh/inc/containers)
+INCLUDES += -I$(abspath ./libs/dumbtools/inc/)
 DEFINES  +=
-override CFLAGS += $(INCLUDES) $(DEFINES)
+LIBS     += -Llibs/yosh -lyosh
+LIBS     += -Llibs/dumbtools/ -ldumbtools 
+override CFLAGS += $(INCLUDES) $(DEFINES) $(LIBS)
 BUILD_DIR   = ./build
 
 .PHONY: clean
@@ -12,11 +16,13 @@ sandbox: libs/yosh/libyosh.a \
 	       libs/dumbtools/libdumbtools.a \
 				 $(BUILD_DIR)/sandbox.o
 	@echo $@
+	@$(CC) $(BUILD_DIR)/sandbox.o $(CFLAGS) -o $@
 
 $(BUILD_DIR)/sandbox.o: sandbox.c
 	@echo $@
+	@$(CC) -c $< $(CFLAGS) -o $@
 
-sandbox.c:
+sandbox.c: libs/
 
 libs/yosh/libyosh.a:
 	@make -C ../../ BUILD_DIR=$(abspath $(BUILD_DIR)) \
