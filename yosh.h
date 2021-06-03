@@ -50,13 +50,12 @@ typedef struct //yosh_calls_t
 
   /** \brief   send one char to io device
    *  \details signature is similar to standard putchar
-   *           \note TODO: check it
    *  \arg     ch char to be sended from shell to io device (e.g. uart) or
    *              data exchange protocol
    *  \return  result of sending
    *  \retval  0 ok
    *  \retval  <0 error occured */
-  int              (*putchar)(char ch);
+  int              (*putchar)(int ch);
 
   /** \brief   get one char from io device. this function shall block thread
    *           while char is getting.
