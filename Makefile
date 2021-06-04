@@ -14,6 +14,7 @@ yosh: $(DISTRIB_DIR)/libyosh.o \
 	    $(INC_DIR)/builtin/about.h \
 		  $(INC_DIR)/builtin/exit.h \
 		  $(INC_DIR)/builtin/help.h
+	@echo $@
 
 $(DISTRIB_DIR)/libyosh.o: $(BUILD_DIR)/yosh.o \
                           $(BUILD_DIR)/builtin/about.o \
@@ -77,8 +78,6 @@ $(BUILD_DIR)/containers/libcontainers.o:
 	@make -C containers BUILD_DIR=$(abspath $(dir $@)) \
 		                  DISTRIB_DIR=$(abspath $(dir $@)) \
 											INC_DIR=$(abspath $(INC_DIR)/containers)
-
-sandbox: yosh
 
 clean:
 	@rm -rf $(BUILD_DIR) $(DISTRIB_DIR)
