@@ -9,19 +9,19 @@ INC_DIR     = $(DISTRIB_DIR)/inc
 
 all: dumbtools
 
-dumbtools: $(DISTRIB_DIR)/libdumbtools.a \
+dumbtools: $(DISTRIB_DIR)/libdumbtools.o \
 	         $(INC_DIR)/dumbtools.h
 	@echo $@
 
-$(DISTRIB_DIR)/libdumbtools.a: $(BUILD_DIR)/dumbtools.o
+$(DISTRIB_DIR)/libdumbtools.o: $(BUILD_DIR)/dumbtools.o
 	@echo $@
 	@mkdir -p $(dir $@)
-	@$(AR) $(ARFLAGS) $@ $?
+	@$(LD) -r $(LDFLAGS) $? -o $@
 
 $(BUILD_DIR)/dumbtools.o: dumbtools.c
 	@echo $@
 	@mkdir -p $(dir $@)
-	$(CC) -c $< $(CFLAGS) -o $@
+	@$(CC) -c $< $(CFLAGS) -o $@
 
 $(INC_DIR)/dumbtools.h: dumbtools.h
 	@echo $@
