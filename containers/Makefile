@@ -1,23 +1,26 @@
-INCLUDES += -I./
-DEFINES  +=
-override CFLAGS += $(INCLUDES) $(DEFINES)
 BUILD_DIR   = ./build
 DISTRIB_DIR = ./dist
-INC_DIR     = ./$(DISTRIB_DIR)/inc
+INC_DIR     = $(DISTRIB_DIR)/inc/containers
+RANLIB = ranlib
+INCLUDES += -I./
+DEFINES  +=
+LIBS     +=
+override CFLAGS += $(INCLUDES) $(DEFINES) $(LIBS)
 
 .PHONY: clean
 
 all: containers
 
-containers: $(DISTRIB_DIR)/libcontainers.o \
+containers: $(DISTRIB_DIR)/libcontainers.a \
 	          $(INC_DIR)/lists.h \
 		        $(INC_DIR)/strings.h
 
-$(DISTRIB_DIR)/libcontainers.o: $(BUILD_DIR)/lists.o \
+$(DISTRIB_DIR)/libcontainers.a: $(BUILD_DIR)/lists.o \
 	                              $(BUILD_DIR)/strings.o
 	@echo $@
 	@mkdir -p $(DISTRIB_DIR)
-	@$(LD) -r $(LDFLAGS) $? -o $@
+	@$(AR) $(ARFLAGS) $@ $?
+	@$(RANLIB) $@
 
 $(BUILD_DIR)/lists.o: lists.c
 	@echo $@
