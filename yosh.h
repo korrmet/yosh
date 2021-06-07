@@ -68,6 +68,20 @@ typedef struct //yosh_calls_t
    *  \retval  <0 error occured */
   int              (*getchar)(void);       /**< get one char from io device */
 
+  /** \brief   copy memory
+   *  \details signature is similar to standard memcpy
+   *  \arg     dst pointer to destination memory area
+   *  \arg     src pointer to source memory area
+   *  \arg     n   size in bytes of memory which will be copied */
+  void  (*memcpy)(void* dst, void* src, size_t n);
+
+  /** \brief   fill memory by specific character
+   *  \details signature is similar to standard memset
+   *  \arg     dst pointer to destination memory area
+   *  \arg     val character to fill memosy
+   *  \arg     n   size in bytes of memory shich you going to fill */
+  void  (*memset)(void* dst, char val, size_t n);
+
   /** \brief   compare to strings
    *  \details signature is similar to standard strcmp
    *           \note TODO: maybe memcmp will be better?

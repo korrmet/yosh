@@ -74,6 +74,9 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   if (!init_struct->calls.getchar) { return NULL; }
   if (!init_struct->calls.malloc)  { return NULL; }
   if (!init_struct->calls.free)    { return NULL; }
+  if (!init_struct->calls.memcpy)  { return NULL; }
+  if (!init_struct->calls.memset)  { return NULL; }
+  if (!init_struct->calls.strcmp)  { return NULL; }
 
   yosh_data_t* shell_desc = 
     (yosh_data_t*)init_struct->calls.malloc(sizeof(yosh_data_t));
@@ -88,6 +91,9 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
 
   shell_desc->env.strcalls.free   = init_struct->calls.free;
   shell_desc->env.strcalls.malloc = init_struct->calls.malloc;
+  shell_desc->env.strcalls.memcpy = init_struct->calls.memcpy;
+  shell_desc->env.strcalls.memset = init_struct->calls.memset;
+  shell_desc->env.strcalls.strcmp = init_struct->calls.strcmp;
   
   yosh_new_input(shell_desc);
 
