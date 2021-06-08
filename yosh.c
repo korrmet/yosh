@@ -114,7 +114,7 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
  *  \retval  1 function runs normally */
 int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
 { for (unsigned int i = 0; i < d->env.builtin_apps_len; i++)
-  { if (d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
+  { if (!d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
     { ((yosh_func_t)d->env.builtin_apps[i]->ptr)(&d->env, args);
       return 1; } }
   
