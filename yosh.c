@@ -94,6 +94,8 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   shell_desc->env.strcalls.memcpy = init_struct->calls.memcpy;
   shell_desc->env.strcalls.memset = init_struct->calls.memset;
   shell_desc->env.strcalls.strcmp = init_struct->calls.strcmp;
+
+  shell_desc->env.version = YOSH_VERSION;
   
   yosh_new_input(shell_desc);
 

@@ -1,7 +1,6 @@
 # yosh
 tiny shell for microcontrollers
 ```
-YOctoSHell v0.0a
  .::::::.     + +       
 .::::::::.   +---- | | |
 :::::::: .\  +---- | | |

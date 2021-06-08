@@ -137,6 +137,8 @@ typedef struct //yosh_env_t
                                              \note don't modify it */
   cont_string_calls_t strcalls;         /**< syscalls for strings
                                              \note don't modify it */
+  char*               version;          /**< version of yosh
+                                             \note don't modify it */
 } yosh_env_t;
 
 /** \brief   describes the type of shell function
