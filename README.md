@@ -119,39 +119,41 @@ may happens but in my opinion it must be close to increment of major version).
 b4 v1.0r will be released next requirements must be closed
 - ( 0) [x] (won't do it) implement output redirect to another command
            I think it's not necessary requirement. This shell is not
-           replacement.
+           replacement for bash.
 - ( 1) [ ] implement braces for manual argument borders
 - ( 2) [ ] implement retval handling
 - ( 3) [ ] implement shell variables extraction
 - ( 4) [ ] implement shell login
 - ( 5) [x] (won't do it) implement adding user commands in running shell
            I think it's not necessary requirement. This shell is not
-           replacement.
+           replacement for bash.
 - ( 6) [ ] make tests
 - ( 7) [ ] complete readme
 - ( 8) [v] make doxygen comments in code
 - ( 9) [ ] white documentation and guidelines about using this shell
 - (10) [v] fix dependencies
-- (11) [ ] add automatic version mark
+- (11) [v] add automatic version mark
 - (12) [v] separate containers library
 - (13) [v] separate dumbtools library
 - (14) [ ] develop build mechanisms
 
 # Tracability matrix
-| requirement | version | commit  | test | file/folder               |
-| ----------- | ------- | ------- | ---- | ------------------------- |
-|  0          | v0.1d   | cfc243e | N/A  | README.md                 |
-|  1          |         |         |  -   |                           |
-|  2          |         |         |      |                           |
-|  3          |         |         |      |                           |
-|  4          |         |         |      |                           |
-|  5          | v0.1d   | cfc243e | N/A  | README.md                 |
-|  6          |         |         |      |                           |
-|  7          |         |         |      |                           |
-|  8          |         |         |      |                           |
-|  9          |         |         |      |                           |
-| 10          | v0.1d   | cfc243e | N/A  | ./                        |
-| 11          |         |         |      |                           |
-| 12          | v0.1d   | cfc243e | N/A  | ./containers              |
-| 13          | v0.1d   | cfc243e | N/A  | ./tests/sandbox/dumbtools |
-| 14          |         |         |      |                           |
+| requirement | version | commit  | test    | file/folder               |
+| ----------- | ------- | ------- | ------- | ------------------------- |
+|  0          | v0.1d   | cfc243e | N/A     | README.md                 |
+|  1          |         |         |  -      |                           |
+|  2          |         |         |         |                           |
+|  3          |         |         |         |                           |
+|  4          |         |         |         |                           |
+|  5          | v0.1d   | cfc243e | N/A     | README.md                 |
+|  6          |         |         |         |                           |
+|  7          |         |         |         |                           |
+|  8          |         |         |         |                           |
+|  9          |         |         |         |                           |
+| 10          | v0.1d   | cfc243e | N/A     | ./                        |
+| 11          | v0.1d   | 126ba2a | sandbox | Makefile,                 |
+|             |         |         |         | yosh.h,                   |
+|             |         |         |         | builtin/about.h           |
+| 12          | v0.1d   | cfc243e | N/A     | ./containers              |
+| 13          | v0.1d   | cfc243e | N/A     | ./tests/sandbox/dumbtools |
+| 14          |         |         |         |                           |
