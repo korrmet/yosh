@@ -11,7 +11,6 @@ yosh_app_t yosh_builtin_about = { .ptr = (void (*)(void))yosh_about,
 
 char* yosh_about_string =
 "\
-YOctoSHell v0.0a\n\
  .::::::.     + +       \n\
 .::::::::.   +---- | | |\n\
 :::::::: .\\  +---- | | |\n\
@@ -50,5 +49,8 @@ Plans about next versions:\n\
 ";
 
 int yosh_about(yosh_env_t* env, yosh_arg_t* args)
-{ yosh_puts(env, yosh_about_string);
+{ yosh_puts(env, "YOctoSHell ");
+  yosh_puts(env, env->version);
+  yosh_puts(env, "\n");
+  yosh_puts(env, yosh_about_string);
   return 0; }
