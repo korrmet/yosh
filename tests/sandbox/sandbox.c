@@ -7,6 +7,8 @@ yosh_init_struct_t shell = { .calls = { .putchar = putchar,
                                         .getchar = getchar,
                                         .malloc  = malloc,
                                         .free    = free,
+                                        .memcpy  = memcpy,
+                                        .memset  = memset,
                                         .strcmp  = strcmp },
                              .greet_string = "sandbox",
                              .user_apps = NULL };

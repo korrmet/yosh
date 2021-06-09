@@ -48,15 +48,23 @@ typedef struct //cont_string_calls_t
    *  \details signature is similar to standard memcpy
    *  \arg     dst pointer to destination memory area
    *  \arg     src pointer to source memory area
-   *  \arg     n   size in bytes of memory which will be copied */
-  void  (*memcpy)(void* dst, void* src, size_t n);
+   *  \arg     n   size in bytes of memory which will be copied
+   *  \return  pointer to copied data or error sequence
+   *           \note check it in original memcpy 
+   *  \retval  NULL  error
+   *  \retval  !NULL valid pointer to copied data */
+  void* (*memcpy)(void* dst, const void* src, size_t n);
 
   /** \brief   fill memory by specific character
    *  \details signature is similar to standard memset
    *  \arg     dst pointer to destination memory area
    *  \arg     val character to fill memosy
-   *  \arg     n   size in bytes of memory shich you going to fill */
-  void  (*memset)(void* dst, char val, size_t n);
+   *  \arg     n   size in bytes of memory shich you going to fill
+   *  \return  pointer to setted data or error sequence
+   *           \note check it in original memset
+   *  \retval  NULL  error
+   *  \retval  !NULL valid pointer */
+  void* (*memset)(void* dst, int val, size_t n);
 
   /** \brief   compare to strings
    *  \details signature is similar to standard strcmp

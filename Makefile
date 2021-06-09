@@ -4,7 +4,7 @@ INC_DIR     = $(DISTRIB_DIR)/inc/yosh
 RANLIB = ranlib
 INCLUDES += -I$(abspath ./)
 INCLUDES += -I$(abspath $(DISTRIB_DIR)/libs/containers/inc)
-DEFINES  +=
+DEFINES  += -DYOSH_VERSION=\"$(shell git describe --tags)\"
 LIBS     +=
 override CFLAGS += $(INCLUDES) $(DEFINES) $(LIBS)
 

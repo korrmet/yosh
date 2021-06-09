@@ -6,7 +6,7 @@ DEFINES  +=
 LIBS     += -Llibs/yosh -lyosh
 LIBS     += -Llibs/dumbtools/ -ldumbtools
 LIBS     += -Llibs/yosh/libs/containers/ -lcontainers
-override CFLAGS += $(INCLUDES) $(DEFINES) #$(LIBS)
+override CFLAGS += $(INCLUDES) $(DEFINES) $(LIBS)
 BUILD_DIR   = ./build
 
 .PHONY: clean
