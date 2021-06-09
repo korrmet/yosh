@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include "yosh.h"
+#include "yosh_app_api.h"
 #include "builtin/exit.h"
 
 int yosh_exit(yosh_env_t* env, yosh_arg_t* args);
