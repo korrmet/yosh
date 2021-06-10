@@ -34,5 +34,9 @@ $(INC_DIR)/dumbtools.h: dumbtools.h
 dumbtools.h:
 dumbtools.c: dumbtools.h
 
+test:
+	@$(CC) tests.c -o tests
+	@./tests
+
 clean:
-	@rm -rf $(BUILD_DIR) $(DISTRIB_DIR) $(INC_DIR)
+	@rm -rf $(BUILD_DIR) $(DISTRIB_DIR) $(INC_DIR) tests

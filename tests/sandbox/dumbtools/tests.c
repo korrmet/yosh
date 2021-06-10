@@ -5,9 +5,12 @@
 unsigned int passed = 0; \
 unsigned int total  = 0
 
-#define TST_START(name, func, ...) \
+#define TST_START(func, name, ...) \
 { unsigned int err_flag = 0; \
-  total++
+  total++;\
+  printf("[%s] ", #func); \
+  printf(name, __VA_ARGS__); \
+  printf("\n")
 
 #define TST_ASS(assert) \
   if (!(assert)) { printf("%s assert failed\n"); }
@@ -21,4 +24,9 @@ unsigned int total  = 0
 
 int main(int argc, char** argv)
 { TST_INIT();
+
+  TST_START(dumbtools_memcpy, "simple call %d", 1);
+
+  TST_END();
+
   TST_CHECK(); }
