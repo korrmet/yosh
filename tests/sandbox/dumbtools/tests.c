@@ -1,19 +1,20 @@
 #include <stdio.h>
-#include "dumbtools.h"
+#include <string.h>
+#include "dumbtools.c"
 
 #define TST_INIT() \
 unsigned int passed = 0; \
 unsigned int total  = 0
 
-#define TST_START(func, name, ...) \
+#define TST_START(func, ...) \
 { unsigned int err_flag = 0; \
   total++;\
   printf("[%s] ", #func); \
-  printf(name, __VA_ARGS__); \
+  printf(__VA_ARGS__); \
   printf("\n")
 
 #define TST_ASS(assert) \
-  if (!(assert)) { printf("%s assert failed\n"); }
+  if (!(assert)) { printf("%s assert failed\n", #assert); }
 
 #define TST_END() \
   if (!err_flag) { passed++; } }
@@ -25,8 +26,13 @@ unsigned int total  = 0
 int main(int argc, char** argv)
 { TST_INIT();
 
-  TST_START(dumbtools_memcpy, "simple call %d", 1);
-
+  TST_START(dumbtools_memcpy, "simple call");
+    char destination[sizeof("source") + 2] =
+    { 0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x55 };
+    char check_array[sizeof("source") + 2] =
+    { 0xaa, 's', 'o', 'u', 'r', 'c', 'e', 0x00, 0x55 };
+    dumbtools_memcpy(&destination[1], "source", sizeof("source"));
+    TST_ASS(memcmp(destination, check_array, sizeof(destination)) == 0);
   TST_END();
 
   TST_CHECK(); }

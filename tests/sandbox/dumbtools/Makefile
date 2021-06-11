@@ -35,7 +35,7 @@ dumbtools.h:
 dumbtools.c: dumbtools.h
 
 test:
-	@$(CC) tests.c -o tests
+	@$(CC) tests.c -g -gdwarf-2 -o tests
 	@./tests
 
 clean:
