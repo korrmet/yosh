@@ -19,6 +19,10 @@ unsigned int total  = 0
 #define TST_END() \
   if (!err_flag) { passed++; } }
 
+#define TST_PURE_FUNC(res, func_call) \
+  printf("[%s] res must be %s\n", #func_call, res); \
+  if ((func_call) == res) { passed++; } else { printf("fail\n"); }
+
 #define TST_CHECK() \
   printf("%d/%d tests passed\n", passed, total); \
   if (passed == total) { return 0; } else { return -1; }
@@ -43,5 +47,7 @@ int main(int argc, char** argv)
     dumbtools_memset(&destination[1], 0x00, 8);
     TST_ASS(memcmp(destination, check_array, sizeof(destination)) == 0);
   TST_END();
+
+  TST_PURE_FUNC(-1, dumbtools_strcmp(NULL, "foo"));
 
   TST_CHECK(); }
