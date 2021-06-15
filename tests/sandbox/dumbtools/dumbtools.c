@@ -8,13 +8,12 @@ void dumbtools_memset(void* dst, char val, size_t n)
 { char* d = (char*)dst; for (int i = 0; i < n; i++) { *d++ = val; } }
 
 int dumbtools_strcmp(const char* str1, const char* str2)
-{ if (str1 == NULL) { return -1; }
-  if (str2 == NULL) { return -1; }
-
-  const char* str1_saved = str1; //need to calc diff position
+{ const char* str1_saved = str1; //need to calc diff position
 
   while(*str1 != 0 && *str2 != 0)
-  { if (*str1 != *str2) { return str1 - str1_saved; } str1++; str2++; }
-  if (*str1 != *str2) { return str1 - str1_saved; } //if one string is shorter
+  { if (*str1 != *str2) { return str1 - str1_saved + 1; } str1++; str2++; }
+                                                   //^ diff pos correction
+  //one string may be shorter
+  if (*str1 != *str2) { return str1 - str1_saved + 1; }
 
   return 0; }

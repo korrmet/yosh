@@ -20,7 +20,7 @@ unsigned int total  = 0
   if (!err_flag) { passed++; } }
 
 #define TST_PURE_FUNC(res, func_call) \
-  printf("[%s] res must be %s\n", #func_call, res); \
+  printf("[%s] res must be %s\n", #func_call, #res); total++; \
   if ((func_call) == res) { passed++; } else { printf("fail\n"); }
 
 #define TST_CHECK() \
@@ -48,6 +48,9 @@ int main(int argc, char** argv)
     TST_ASS(memcmp(destination, check_array, sizeof(destination)) == 0);
   TST_END();
 
-  TST_PURE_FUNC(-1, dumbtools_strcmp(NULL, "foo"));
+  TST_PURE_FUNC(0, dumbtools_strcmp("foo", "foo"));
+  TST_PURE_FUNC(1, dumbtools_strcmp("foo", "bar"));
+  TST_PURE_FUNC(2, dumbtools_strcmp("123", "132"));
+  TST_PURE_FUNC(3, dumbtools_strcmp("12",  "123"));
 
   TST_CHECK(); }

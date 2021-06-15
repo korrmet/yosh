@@ -22,8 +22,9 @@ void dumbtools_memset(void* dst, char val, size_t n);
  *  \arg     str1 pointer to string
  *  \arg     str2 pointer to string
  *  \return  result of comparsion or error sequence
- *  \retval  0  strings are not equal
- *  \retval  1  strings are equal
+ *  \retval  0  strings are equal
+ *  \retval  >0 strings are not equal, number of byte where strings starts to
+ *              differ
  *  \retval  -1 error occured */
 int dumbtools_strcmp(const char* str1, const char* str2);
 #endif//DUMBTOOLS_H
