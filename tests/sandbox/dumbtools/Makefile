@@ -1,10 +1,10 @@
 BUILD_DIR   = ./build
 DISTRIB_DIR = ./dist
 INC_DIR     = $(DISTRIB_DIR)/inc/dumbtools
-RANLIB = ranlib
-INCLUDES += -I$(abspath ./)
-DEFINES  +=
-LIBS     +=
+RANLIB      = ranlib
+INCLUDES    += -I$(abspath ./)
+DEFINES     +=
+LIBS        +=
 override CFLAGS += $(INCLUDES) $(DEFINES) $(LIBS)
 
 .PHONY: all clean
@@ -35,8 +35,10 @@ dumbtools.h:
 dumbtools.c: dumbtools.h
 
 test:
-	@$(CC) tests.c -g -gdwarf-2 -o tests
+	@$(CC) tests.c -g -gdwarf-2 -Wall -pedantic -fprofile-arcs -ftest-coverage \
+		-o tests
 	@./tests
+	@gcov tests.c
 
 clean:
-	@rm -rf $(BUILD_DIR) $(DISTRIB_DIR) $(INC_DIR) tests
+	@rm -rf $(BUILD_DIR) $(DISTRIB_DIR) $(INC_DIR) tests *.gcov *.gcda *.gcno
