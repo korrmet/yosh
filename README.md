@@ -136,6 +136,7 @@ b4 v1.0r will be released next requirements must be closed
 - (12) [v] separate containers library
 - (13) [v] separate dumbtools library
 - (14) [ ] develop build mechanisms
+- (15) [ ] segregate parser and command execution
 
 # Tracability matrix
 | requirement | version | commit  | test    | file/folder               |
