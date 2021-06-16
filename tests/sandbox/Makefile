@@ -1,7 +1,6 @@
 INCLUDES += -I$(abspath ./)
 INCLUDES += -I$(abspath ./libs/yosh/inc)
 INCLUDES += -I$(abspath ./libs/yosh/libs/containers/inc)
-INCLUDES += -I$(abspath ./libs/dumbtools/inc)
 DEFINES  +=
 LIBS     += -Llibs/yosh -lyosh
 LIBS     += -Llibs/yosh/libs/containers/ -lcontainers
