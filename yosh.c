@@ -74,6 +74,9 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
   if (!init_struct->calls.getchar) { return NULL; }
   if (!init_struct->calls.malloc)  { return NULL; }
   if (!init_struct->calls.free)    { return NULL; }
+  if (!init_struct->calls.memcpy)  { return NULL; }
+  if (!init_struct->calls.memset)  { return NULL; }
+  if (!init_struct->calls.strcmp)  { return NULL; }
 
   yosh_data_t* shell_desc = 
     (yosh_data_t*)init_struct->calls.malloc(sizeof(yosh_data_t));
@@ -88,6 +91,11 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
 
   shell_desc->env.strcalls.free   = init_struct->calls.free;
   shell_desc->env.strcalls.malloc = init_struct->calls.malloc;
+  shell_desc->env.strcalls.memcpy = init_struct->calls.memcpy;
+  shell_desc->env.strcalls.memset = init_struct->calls.memset;
+  shell_desc->env.strcalls.strcmp = init_struct->calls.strcmp;
+
+  shell_desc->env.version = YOSH_VERSION;
   
   yosh_new_input(shell_desc);
 
@@ -108,7 +116,7 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
  *  \retval  1 function runs normally */
 int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
 { for (unsigned int i = 0; i < d->env.builtin_apps_len; i++)
-  { if (d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
+  { if (!d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
     { ((yosh_func_t)d->env.builtin_apps[i]->ptr)(&d->env, args);
       return 1; } }
   

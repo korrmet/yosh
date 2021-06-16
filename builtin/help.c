@@ -92,7 +92,7 @@ int yosh_help(yosh_env_t* env, yosh_arg_t* args)
   { while (args)
     { for (unsigned int i = 0; i < yosh_builtin_help_data.topic_array_size; i++)
       { if (env->strcalls.strcmp(yosh_builtin_help_data.topic_array[i].name, 
-                             args->str))
+                                 args->str) == 0)
         { if (yosh_builtin_help_data.topic_array[i].description)
           { yosh_puts(env, yosh_builtin_help_data.topic_array[i].description); }
           if (yosh_builtin_help_data.topic_array[i].action)
