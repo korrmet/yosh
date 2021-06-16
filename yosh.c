@@ -138,10 +138,11 @@ int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
  *           \note TODO: it contains manual operations on containers. replace
  *                       if possible
  *  \arg     desc shell desccriptor
- *  \return  error sequence
- *  \retval  0  all ok
- *  \retval  -1 error occure while parsing */
-int yosh_parser(yosh_data_t* desc)
+ *  \arg     pointer to pointer to arg list
+ *  \return  result of execution
+ *  \retval  -1 error sequence
+ *  \retval  0  all ok */
+int yosh_parser(yosh_data_t* desc, yosh_arg_list_t** arg)
 { if (!desc) { return -1; }
   
   yosh_arg_t* arg_list = NULL;
