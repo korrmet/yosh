@@ -11,12 +11,6 @@ yosh_app_t* yosh_builtin_apps[] = { &yosh_builtin_help,
                                     &yosh_builtin_about,
                                     &yosh_builtin_exit   };
 
-/** \brief this type is used for argument passing into command functions */
-typedef struct
-{ cont_list_t list;
-  char*       arg;
-} yosh_arg_list_t;
-
 /** \brief this type is used by parser */
 typedef struct //yosh_data_t
 { cont_string_t*     input;        ///< string of a user input
@@ -114,15 +108,15 @@ void* yosh_start(const yosh_init_struct_t* init_struct)
  *  \return  result of run
  *  \retval  0 nothing to run
  *  \retval  1 function runs normally */
-int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
+int yosh_try_run(yosh_data_t* d, yosh_arg_list_t* args)
 { for (unsigned int i = 0; i < d->env.builtin_apps_len; i++)
-  { if (!d->env.calls.strcmp(args->str, d->env.builtin_apps[i]->name))
+  { if (!d->env.calls.strcmp(args->arg, d->env.builtin_apps[i]->name))
     { ((yosh_func_t)d->env.builtin_apps[i]->ptr)(&d->env, args);
       return 1; } }
   
   yosh_app_list_t* usr = (yosh_app_list_t*)d->env.user_apps;
   while (usr != NULL)
-  { if (d->env.calls.strcmp(args->str, usr->app->name)) 
+  { if (d->env.calls.strcmp(args->arg, usr->app->name)) 
     { ((yosh_func_t)usr->app->ptr)(&d->env, args); return 1; } 
     usr = (yosh_app_list_t*)usr->l.next; }
 
@@ -159,7 +153,8 @@ yosh_arg_list_t* yosh_parser(yosh_data_t* desc)
       { arg_list = desc->env.calls.malloc(sizeof(yosh_arg_list_t));
         cont_list_init(arg_list, YOSH_LIST_ID__ARG); }
       else 
-      { yosh_arg_t* tmp_arg = desc->env.calls.malloc(sizeof(yosh_arg_list_t));
+      { yosh_arg_list_t* tmp_arg = 
+          desc->env.calls.malloc(sizeof(yosh_arg_list_t));
         cont_list_init(tmp_arg, YOSH_LIST_ID__ARG);
         arg_list = cont_list_append(arg_list, tmp_arg); }
 
@@ -198,9 +193,16 @@ int yosh_input(char ch, void* shell_desc)
       yosh_arg_list_t* args = yosh_parser(d);
 
       if (args) 
-      { //call programs
+      { args = cont_list_first(args);
+        
+        if (yosh_try_run(d, args) == 0)
+        { yosh_puts(&d->env, "unknown command: ");
+          yosh_puts(&d->env, args->arg);
+          d->env.calls.putchar('\n'); }
         //delete list
-      }
+        while (args->list.next != NULL)
+        { args = args->list.next; d->env.calls.free(args->list.prev); }
+        d->env.calls.free(args); }
 
       yosh_del_input(d); 
       if (d->env.state == YOSH_STATE__HALT) { d->env.calls.free(d);
