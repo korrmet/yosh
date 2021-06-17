@@ -138,14 +138,13 @@ int yosh_try_run(yosh_data_t* d, yosh_arg_t* args)
  *           \note TODO: it contains manual operations on containers. replace
  *                       if possible
  *  \arg     desc shell desccriptor
- *  \arg     pointer to pointer to arg list
- *  \return  result of execution
- *  \retval  -1 error sequence
- *  \retval  0  all ok */
-int yosh_parser(yosh_data_t* desc, yosh_arg_list_t** arg)
-{ if (!desc) { return -1; }
+ *  \return  list of parsed arguments
+ *  \retval  NULL  have no args or error occured
+ *  \retval  !NULL valid pointer to arguments list */
+yosh_arg_list_t* yosh_parser(yosh_data_t* desc)
+{ if (!desc) { return NULL; }
   
-  yosh_arg_t* arg_list = NULL;
+  yosh_arg_list_t* arg_list = NULL;
   
   char* cur = desc->input->s;
   int arg_flag = 0;
@@ -157,31 +156,33 @@ int yosh_parser(yosh_data_t* desc, yosh_arg_list_t** arg)
     { arg_flag = 1;
 
       if (arg_list == NULL) 
-      { arg_list = desc->env.calls.malloc(sizeof(yosh_arg_t));
-        cont_list_init(arg_list, 0); }
+      { arg_list = desc->env.calls.malloc(sizeof(yosh_arg_list_t));
+        cont_list_init(arg_list, YOSH_LIST_ID__ARG); }
       else 
-      { yosh_arg_t* tmp_arg = desc->env.calls.malloc(sizeof(yosh_arg_t));
-        cont_list_init(tmp_arg, 0);
+      { yosh_arg_t* tmp_arg = desc->env.calls.malloc(sizeof(yosh_arg_list_t));
+        cont_list_init(tmp_arg, YOSH_LIST_ID__ARG);
         arg_list = cont_list_append(arg_list, tmp_arg); }
 
-      arg_list->str = cur; }
+      arg_list->arg = cur; }
 
     cur++; }
 
-  if (arg_list != NULL)
-  { arg_list = cont_list_first(arg_list);
-    
-    if (yosh_try_run(desc, arg_list) == 0)
-    { yosh_puts(&desc->env, "unknown command: ");
-      yosh_puts(&desc->env, arg_list->str);
-      desc->env.calls.putchar('\n'); }
+  return arg_list; }
 
-    while (arg_list->l.next != NULL) 
-    { arg_list = (yosh_arg_t*)arg_list->l.next;
-      desc->env.calls.free(arg_list->l.prev); }
-    desc->env.calls.free(arg_list);
-  }
-  return 0; }
+//  if (arg_list != NULL)
+//  { arg_list = cont_list_first(arg_list);
+//    
+//    if (yosh_try_run(desc, arg_list) == 0)
+//    { yosh_puts(&desc->env, "unknown command: ");
+//      yosh_puts(&desc->env, arg_list->str);
+//      desc->env.calls.putchar('\n'); }
+//
+//    while (arg_list->l.next != NULL) 
+//    { arg_list = (yosh_arg_t*)arg_list->l.next;
+//      desc->env.calls.free(arg_list->l.prev); }
+//    desc->env.calls.free(arg_list);
+//  }
+//  return 0; }
 
 int yosh_input(char ch, void* shell_desc)
 { if (!shell_desc) { return -1; }
@@ -193,7 +194,13 @@ int yosh_input(char ch, void* shell_desc)
   switch(ch)
   { case '\n':
     case '\r':  
-    { if (yosh_parser(d) == -1) { d->env.calls.free(d); return -1; }
+    { //if (yosh_parser(d) == -1) { d->env.calls.free(d); return -1; }
+      yosh_arg_list_t* args = yosh_parser(d);
+
+      if (args) 
+      { //call programs
+        //delete list
+      }
 
       yosh_del_input(d); 
       if (d->env.state == YOSH_STATE__HALT) { d->env.calls.free(d);

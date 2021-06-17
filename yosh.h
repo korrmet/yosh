@@ -13,10 +13,10 @@
 /** \brief identifiers of linked list payload 
  *         \note TODO: check for unused */
 typedef enum //cont_list_id_t
-{ cont_list_ID__ARG     = 0,
-  cont_list_ID__APP     = 1,
-  cont_list_ID__ENV_VAR = 2
-} cont_list_id_t;
+{ YOSH_LIST_ID__ARG     = 0,
+  YOSH_LIST_ID__APP     = 1,
+  YOSH_LIST_ID__ENV_VAR = 2
+} yosh_list_id_t;
 
 /** \brief   type of argument
  *  \details set of strings inside linked list container */
