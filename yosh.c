@@ -189,8 +189,7 @@ int yosh_input(char ch, void* shell_desc)
   switch(ch)
   { case '\n':
     case '\r':  
-    { //if (yosh_parser(d) == -1) { d->env.calls.free(d); return -1; }
-      yosh_arg_list_t* args = yosh_parser(d);
+    { yosh_arg_list_t* args = yosh_parser(d);
 
       if (args) 
       { args = cont_list_first(args);
@@ -199,9 +198,10 @@ int yosh_input(char ch, void* shell_desc)
         { yosh_puts(&d->env, "unknown command: ");
           yosh_puts(&d->env, args->arg);
           d->env.calls.putchar('\n'); }
-        //delete list
+
         while (args->list.next != NULL)
-        { args = args->list.next; d->env.calls.free(args->list.prev); }
+        { args = (yosh_arg_list_t*)args->list.next; 
+          d->env.calls.free(args->list.prev); }
         d->env.calls.free(args); }
 
       yosh_del_input(d); 
