@@ -164,21 +164,6 @@ yosh_arg_list_t* yosh_parser(yosh_data_t* desc)
 
   return arg_list; }
 
-//  if (arg_list != NULL)
-//  { arg_list = cont_list_first(arg_list);
-//    
-//    if (yosh_try_run(desc, arg_list) == 0)
-//    { yosh_puts(&desc->env, "unknown command: ");
-//      yosh_puts(&desc->env, arg_list->str);
-//      desc->env.calls.putchar('\n'); }
-//
-//    while (arg_list->l.next != NULL) 
-//    { arg_list = (yosh_arg_t*)arg_list->l.next;
-//      desc->env.calls.free(arg_list->l.prev); }
-//    desc->env.calls.free(arg_list);
-//  }
-//  return 0; }
-
 int yosh_input(char ch, void* shell_desc)
 { if (!shell_desc) { return -1; }
   yosh_data_t* d = (yosh_data_t*)shell_desc;
