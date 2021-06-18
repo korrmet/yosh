@@ -136,7 +136,7 @@ b4 v1.0r will be released next requirements must be closed
 - (12) [v] separate containers library
 - (13) [v] separate dumbtools library
 - (14) [ ] develop build mechanisms
-- (15) [ ] segregate parser and command execution
+- (15) [v] segregate parser and command execution
 
 # Tracability matrix
 | requirement | version | commit  | test    | file/folder               |
@@ -158,3 +158,6 @@ b4 v1.0r will be released next requirements must be closed
 | 12          | v0.1r   | cfc243e | N/A     | ./containers              |
 | 13          | v0.2r   | cfc243e | N/A     | ./tests/sandbox           |
 | 14          |         |         |         |                           |
+| 15          | v0.3r   | da945fb | N/A     | yosh.c,                   |
+|             |         |         |         | yosh.h,                   |
+|             |         |         |         | builtin                   |
