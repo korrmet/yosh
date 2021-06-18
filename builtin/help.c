@@ -3,7 +3,7 @@
 #include "yosh.h"
 #include "yosh_app_api.h"
 
-int yosh_help(yosh_env_t* env, yosh_arg_t* args);
+int yosh_help(yosh_env_t* env, yosh_arg_list_t* args);
 
 yosh_app_t yosh_builtin_help = { .ptr  = (void (*)(void))yosh_help,
                                  .name = "help",
@@ -72,8 +72,8 @@ yosh_builtin_help_data_t yosh_builtin_help_data =
                       sizeof(yosh_builtin_help_topic_t)
 };
 
-int yosh_help(yosh_env_t* env, yosh_arg_t* args) 
-{ args = (yosh_arg_t*)args->l.next; //first just a name of function
+int yosh_help(yosh_env_t* env, yosh_arg_list_t* args) 
+{ args = (yosh_arg_list_t*)args->list.next; //first just a name of function
 
   if (!args) 
   { yosh_puts(env, yosh_help_default);
@@ -92,13 +92,13 @@ int yosh_help(yosh_env_t* env, yosh_arg_t* args)
   { while (args)
     { for (unsigned int i = 0; i < yosh_builtin_help_data.topic_array_size; i++)
       { if (env->strcalls.strcmp(yosh_builtin_help_data.topic_array[i].name, 
-                                 args->str) == 0)
+                                 args->arg) == 0)
         { if (yosh_builtin_help_data.topic_array[i].description)
           { yosh_puts(env, yosh_builtin_help_data.topic_array[i].description); }
           if (yosh_builtin_help_data.topic_array[i].action)
           { yosh_builtin_help_data.topic_array[i].action(env); }
           break; } }
 
-      args = (yosh_arg_t*)args->l.next; } }
+      args = (yosh_arg_list_t*)args->list.next; } }
 
   return 0; }
