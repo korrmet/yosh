@@ -13,17 +13,17 @@
 /** \brief identifiers of linked list payload 
  *         \note TODO: check for unused */
 typedef enum //cont_list_id_t
-{ cont_list_ID__ARG     = 0,
-  cont_list_ID__APP     = 1,
-  cont_list_ID__ENV_VAR = 2
-} cont_list_id_t;
+{ YOSH_LIST_ID__ARG     = 0,
+  YOSH_LIST_ID__APP     = 1,
+  YOSH_LIST_ID__ENV_VAR = 2
+} yosh_list_id_t;
 
-/** \brief   type of argument
- *  \details set of strings inside linked list container */
-typedef struct //yosh_arg_t
-{ cont_list_t l;   /**< linked list container part */
-  char*       str; /**< word of input string without separating symbol (space) */
-} yosh_arg_t;
+/** \brief   this type is used for argument passing into command functions 
+ *  \details set of strings packet in list container */
+typedef struct //yosh_arg_list_t
+{ cont_list_t list; /**< linked list container part */
+  char*       arg;  /**< argument c-string */
+} yosh_arg_list_t;
 
 /** \brief   shell environment variable
  *  \details pair of strings name-value packed in linked list container */
@@ -149,7 +149,7 @@ typedef struct //yosh_env_t
  *                others - all ords after it separated space. packed in list
  *                container.
  *                \note use container api to access it */
-typedef int (*yosh_func_t)(yosh_env_t* env, yosh_arg_t* args);
+typedef int (*yosh_func_t)(yosh_env_t* env, yosh_arg_list_t* args);
 
 /** \brief   list of apps that user want to run
  *  \details may be changed in runtime */

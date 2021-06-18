@@ -3,7 +3,7 @@
 #include "yosh_app_api.h"
 #include "builtin/about.h"
 
-int yosh_about(yosh_env_t* env, yosh_arg_t* args);
+int yosh_about(yosh_env_t* env, yosh_arg_list_t* args);
 
 yosh_app_t yosh_builtin_about = { .ptr = (void (*)(void))yosh_about,
                                   .name = "about",
@@ -25,7 +25,7 @@ This shell is made for microcontrollers at first, but may be used everywhere.\n\
 It's whitten on pure C and doesn't contain any platform-specific code.\n\
 ";
 
-int yosh_about(yosh_env_t* env, yosh_arg_t* args)
+int yosh_about(yosh_env_t* env, yosh_arg_list_t* args)
 { yosh_puts(env, "YOctoSHell ");
   yosh_puts(env, env->version);
   yosh_puts(env, "\n");
